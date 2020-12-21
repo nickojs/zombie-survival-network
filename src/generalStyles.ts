@@ -1,4 +1,24 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+const mainGradient = css`
+  background: repeating-linear-gradient(45deg, 
+    rgba(250, 201, 0, 0.4) 0px,
+    rgba(250, 201, 0, 0.4) 20px, 
+    rgba(0, 0, 0, 0.4) 20px, 
+    rgba(0, 0, 0, 0.4) 40px);
+`;
+
+const secondaryGradient = css`
+  background: repeating-linear-gradient(45deg, 
+    rgba(21, 21, 21, 0.4) 0px,
+    rgba(21, 21, 21, 0.4) 20px, 
+    rgba(0, 0, 0, 0.4) 20px, 
+    rgba(0, 0, 0, 0.4) 40px);
+`;
+
+export enum Gradient {
+  MAIN, SECONDARY
+}
 
 export const Container = styled.div`
   display: flex;
@@ -19,6 +39,29 @@ export const Container = styled.div`
   
   color: white;
   background: #696F7A;
+`;
+
+export const Button = styled.button`
+  width: 100%;
+  padding: 6px;
+  margin: 6px auto;
+  box-sizing: border-box;
+  color: white;
+  font-weight: bold;
+  text-align: center; 
+  
+  border: 1px outset white;
+  border-radius: 4px;
+  ${({ gradient }: { gradient: Gradient }) => (
+    // eslint-disable-next-line no-nested-ternary
+    gradient === Gradient.MAIN
+      ? mainGradient
+      : gradient === Gradient.SECONDARY
+        ? secondaryGradient
+        : 'background-color: grey;'
+  )};
+
+  cursor: pointer;
 `;
 
 export const Title = styled.h2`
