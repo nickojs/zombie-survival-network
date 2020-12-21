@@ -15,7 +15,7 @@ code {
 /* Background pattern made by:
    https://leaverou.github.io/css3patterns/#carbon */
 
-   html, body, #root, #root>div {
+   html {
     height: 100%;
     
     background:
