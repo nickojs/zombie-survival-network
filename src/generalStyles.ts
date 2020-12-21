@@ -12,6 +12,7 @@ export const Container = styled.div`
   }
   padding: 6px;
   max-height: 550px;
+  margin: 24px;
   
   border: 3px outset black;
   box-sizing: border-box;
@@ -22,12 +23,10 @@ export const Container = styled.div`
 
 export const Title = styled.h2`
   padding: 12px;
-  width: 250px;
+  width: 100%;
 
   @media(max-width: 450px){
-    width: 200px;
     transform: skew(0deg);
-
   }
 
   transform: skew(-25deg);
@@ -65,5 +64,5 @@ export const FullWidth = styled.div`
 `;
 
 export const ToggleDiv = styled.div`
-  display: ${({ show }: { show: boolean }) => show ? 'block' : 'none'};
+  display: ${({ show }: { show: boolean }) => (show ? 'block' : 'none')};
 `;
