@@ -12,6 +12,7 @@
     "@types/react-dom": "^16.9.8",
     "@typescript-eslint/eslint-plugin": "^4.10.0",
     "@typescript-eslint/parser": "^4.10.0",
+    "axios": "^0.21.1",
     "eslint": "^7.15.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "^2.22.1",
@@ -51,6 +52,7 @@
     ]
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/styled-components": "^5.1.7",
     "cz-conventional-changelog": "3.3.0"
   },
