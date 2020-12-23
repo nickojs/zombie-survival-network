@@ -1,11 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Gradient } from '../../generalStyles';
 import * as S from './styles';
+import useRequest, { Options } from '../../hooks/useRequest';
 
 export default () => {
+  const [options, setOptions] = useState<Options>(null);
+  const [requestData] = useRequest(options);
+  const { data, error, loading } = requestData;
+
   const { register, handleSubmit, errors } = useForm();
-  const onSubmit = (data: Record<string, any>) => console.log(data);
+  const onSubmit = (data: Record<string, any>) => setOptions({
+    method: 'POST',
+    url: 'auth/signin',
+    data
+  });
+
   console.log(errors);
 
   return (
