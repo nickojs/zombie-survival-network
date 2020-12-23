@@ -62,6 +62,8 @@ export const Button = styled.button`
   )};
 
   cursor: pointer;
+
+  &:active{ border: 1px inset white; }
 `;
 
 export const Title = styled.h2`
