@@ -1,15 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Gradient } from '../../generalStyles';
+import useRequest, { Options, State } from '../../hooks/useRequest';
 import * as S from './styles';
 
 export default () => {
   const {
     register, handleSubmit, errors, watch
   } = useForm();
-  const onSubmit = (data: Record<string, any>) => console.log(data);
-  console.log(errors);
+  const [options, setOptions] = useState<Options>(null);
+  const [requestData] = useRequest(options);
+  const { data, error, loading } = requestData as State;
+
   const watchPassword = watch('password');
+
+  const onSubmit = (data: Record<string, any>) => setOptions({
+    method: 'POST',
+    url: 'user/',
+    data
+  });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -17,7 +26,7 @@ export default () => {
         type="text"
         placeholder="username"
         name="username"
-        ref={register({ required: true })}
+        ref={register({ required: true, minLength: 4, maxLength: 16 })}
       />
       {errors.username?.type === 'required' && <S.ErrorMsg>Required field</S.ErrorMsg>}
 
@@ -46,7 +55,12 @@ export default () => {
       />
       {errors.confirmPassword?.type === 'validate' && <S.ErrorMsg>Passwords don&apos;t match</S.ErrorMsg>}
 
-      <Button type="submit" gradient={Gradient.MAIN}>
+      <Button
+        type="submit"
+        gradient={Gradient.MAIN}
+        loading={loading}
+        disabled={loading}
+      >
         Confirm
       </Button>
     </form>

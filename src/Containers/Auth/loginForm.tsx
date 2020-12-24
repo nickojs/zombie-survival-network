@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Gradient } from '../../generalStyles';
 import * as S from './styles';
-import useRequest, { Options } from '../../hooks/useRequest';
+import useRequest, { Options, State } from '../../hooks/useRequest';
 
 export default () => {
   const [options, setOptions] = useState<Options>(null);
   const [requestData] = useRequest(options);
-  const { data, error, loading } = requestData;
+  const { data, error, loading } = requestData as State;
 
   const { register, handleSubmit, errors } = useForm();
   const onSubmit = (data: Record<string, any>) => setOptions({
@@ -15,8 +15,6 @@ export default () => {
     url: 'auth/signin',
     data
   });
-
-  console.log(errors);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -33,8 +31,12 @@ export default () => {
         name="password"
         ref={register}
       />
-
-      <Button type="submit" gradient={Gradient.MAIN}>
+      <Button
+        type="submit"
+        gradient={Gradient.MAIN}
+        loading={loading}
+        disabled={loading}
+      >
         Confirm
       </Button>
     </form>
