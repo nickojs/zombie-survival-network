@@ -1,8 +1,9 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
+import { NotificationTypes } from '../../contexts/notificationContext';
 
 interface NotificationProps {
-  color?: string;
   display: number;
+  type: NotificationTypes;
 }
 
 const fadeIn = keyframes`
@@ -12,6 +13,37 @@ const fadeIn = keyframes`
     top: 5%
   }
 `;
+
+const notificationColor = (type: NotificationTypes) => {
+  switch (type) {
+    case NotificationTypes.SUCCESS:
+      return css`
+        border: 1px outset green;
+        background: lightgreen;
+        color: white;
+      `;
+    case NotificationTypes.ERROR:
+      return css`
+        border: 1px outset red;
+        background: lightcoral;
+        color: white;
+      `;
+    case NotificationTypes.WARNING:
+      return css`
+        border: 1px outset yellow;
+        background: lightyellow;
+        color: black;
+      `;
+    case NotificationTypes.DEFAULT:
+      return css`
+        border: 1px outset lightsalmon;
+        background: white;
+        color: black;
+      `;
+    default:
+      break;
+  }
+};
 
 export const NotificationContainer = styled.div<NotificationProps>`
   position: absolute;
@@ -25,8 +57,5 @@ export const NotificationContainer = styled.div<NotificationProps>`
   animation: ${fadeIn} 1s cubic-bezier(0.23, 1, 0.320, 1);
 
   border-radius: 4px;
-  border: 1px outset lightgreen;
-
-  color: white;
-  background: green;
+  ${({ type }) => notificationColor(type)}
 `;

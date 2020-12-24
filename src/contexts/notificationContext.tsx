@@ -1,8 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
 
+export enum NotificationTypes {
+  SUCCESS,
+  ERROR,
+  WARNING,
+  DEFAULT
+}
+
 interface NotificationContextProps {
   notification: string | null;
-  messageHandler(msg: string): void;
+  type: NotificationTypes;
+  messageHandler(msg: string, type: NotificationTypes): void;
+  dismissNotification(): void;
 }
 
 export const NotificationContext = React.createContext<NotificationContextProps>(
@@ -10,24 +19,32 @@ export const NotificationContext = React.createContext<NotificationContextProps>
 );
 
 export const NotificationProvider: React.FC = ({ children }) => {
-  const [message, setMessage] = useState<string | null>(null);
+  const [notification, setNotification] = useState<string | null>(null);
+  const [type, setType] = useState<NotificationTypes>(NotificationTypes.DEFAULT);
 
-  const setMessageHandler = (msg: string) => setMessage(msg);
+  const messageHandler = (msg: string, type: NotificationTypes) => {
+    setNotification(msg);
+    setType(type);
+  };
+
+  const dismissNotification = () => setNotification(null);
 
   useEffect(() => {
-    if (!message) return;
+    if (!notification) return;
     const timer = setTimeout(() => {
-      setMessage(null);
+      setNotification(null);
     }, 3000);
 
     return () => { clearTimeout(timer); };
-  }, [message]);
+  }, [notification]);
 
   return (
     <NotificationContext.Provider
       value={{
-        notification: message,
-        messageHandler: setMessageHandler
+        type,
+        notification,
+        messageHandler,
+        dismissNotification
       }}
     >
       {children}
