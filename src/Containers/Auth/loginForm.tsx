@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Gradient } from '../../generalStyles';
+
 import * as S from './styles';
 import useRequest, { Options, State } from '../../hooks/useRequest';
+import { useNotification } from '../../contexts/notificationContext';
 
 export default () => {
   const [options, setOptions] = useState<Options>(null);
   const [requestData] = useRequest(options);
   const { data, error, loading } = requestData as State;
+  const { messageHandler } = useNotification();
 
   const { register, handleSubmit, errors } = useForm();
   const onSubmit = (data: Record<string, any>) => setOptions({
@@ -15,6 +18,8 @@ export default () => {
     url: 'auth/signin',
     data
   });
+
+  useEffect(() => { if (error) messageHandler(error); }, [error]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
