@@ -1,4 +1,5 @@
-import styled, { css } from 'styled-components';
+import React from 'react';
+import styled, { css, keyframes, StyledFunction } from 'styled-components';
 
 const mainGradient = css`
   background: repeating-linear-gradient(45deg, 
@@ -14,6 +15,19 @@ const secondaryGradient = css`
     rgba(21, 21, 21, 0.4) 20px, 
     rgba(0, 0, 0, 0.4) 20px, 
     rgba(0, 0, 0, 0.4) 40px);
+`;
+
+const loading = keyframes`
+  0% {
+    background-position: 0;
+  }
+  100% {
+    background-position: 56px;
+  }
+`;
+
+const loadingCss = css`
+  animation: ${loading} .5s linear infinite;
 `;
 
 export enum Gradient {
@@ -41,7 +55,12 @@ export const Container = styled.div`
   background: #696F7A;
 `;
 
-export const Button = styled.button`
+interface ButtonsProps {
+  gradient: Gradient;
+  loading?: boolean;
+}
+
+export const Button = styled.button<ButtonsProps>`
   width: 100%;
   padding: 6px;
   margin: 6px auto;
@@ -52,7 +71,7 @@ export const Button = styled.button`
   
   border: 1px outset white;
   border-radius: 4px;
-  ${({ gradient }: { gradient: Gradient }) => (
+  ${({ gradient }) => (
     // eslint-disable-next-line no-nested-ternary
     gradient === Gradient.MAIN
       ? mainGradient
@@ -60,10 +79,12 @@ export const Button = styled.button`
         ? secondaryGradient
         : 'background-color: grey;'
   )};
-
+  background-size: 56px;
   cursor: pointer;
-
+  ${({ loading }) => loading && loadingCss}
+  
   &:active{ border: 1px inset white; }
+  &:disabled{ color: grey; }
 `;
 
 export const Title = styled.h2`
