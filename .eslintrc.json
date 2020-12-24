@@ -20,6 +20,7 @@
     "@typescript-eslint"
   ],
   "rules": {
+    "consistent-return": "off",
     "no-unused-vars": "off",
     "no-return-assign": "off",
     "react/jsx-props-no-spreading": "off",
