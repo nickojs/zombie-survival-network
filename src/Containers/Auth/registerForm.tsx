@@ -4,7 +4,7 @@ import { Button, Gradient } from '../../generalStyles';
 
 import * as S from './styles';
 import useRequest, { Options, State } from '../../hooks/useRequest';
-import { useNotification } from '../../contexts/notificationContext';
+import { NotificationTypes, useNotification } from '../../contexts/notificationContext';
 
 export default () => {
   const {
@@ -23,7 +23,17 @@ export default () => {
     data
   });
 
-  useEffect(() => { if (error) messageHandler(error); }, [error]);
+  useEffect(() => {
+    if (error) {
+      messageHandler(error, NotificationTypes.ERROR);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (data) {
+      messageHandler(data.message, NotificationTypes.SUCCESS);
+    }
+  }, [data]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
