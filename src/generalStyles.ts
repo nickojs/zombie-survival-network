@@ -1,5 +1,4 @@
-import React from 'react';
-import styled, { css, keyframes, StyledFunction } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 const mainGradient = css`
   background: repeating-linear-gradient(45deg, 
