@@ -57,7 +57,7 @@ export const Container = styled.div`
 
 interface ButtonsProps {
   gradient: Gradient;
-  loading?: boolean;
+  loading?: number;
 }
 
 export const Button = styled.button<ButtonsProps>`
@@ -131,4 +131,24 @@ export const FullWidth = styled.div`
 
 export const ToggleDiv = styled.div`
   display: ${({ show }: { show: boolean }) => (show ? 'block' : 'none')};
+`;
+
+export const TextField = styled.input`
+  padding: 8px;
+  margin: 6px auto;
+  display: block;
+  
+  font-weight: bold;
+
+  color: white;
+  border: 1px inset black;
+`;
+
+export const ErrorMsg = styled.p`
+  padding: 0;
+  margin: 2px auto;
+  width: 100%;
+  
+  text-align: center;
+  color: lightcoral;
 `;

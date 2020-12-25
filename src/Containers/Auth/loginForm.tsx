@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, Gradient } from '../../generalStyles';
+import {
+  Button, ErrorMsg, Gradient, TextField
+} from '../../generalStyles';
 
-import * as S from './styles';
 import useRequest, { Options, State } from '../../hooks/useRequest';
 import { NotificationTypes, useNotification } from '../../contexts/notificationContext';
 
@@ -27,14 +28,14 @@ export default () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <S.TextField
+      <TextField
         type="identifier"
         placeholder="email or username"
         name="identifier"
         ref={register({ required: true })}
       />
-      {errors.identifier?.type === 'required' && <S.ErrorMsg>Required field</S.ErrorMsg>}
-      <S.TextField
+      {errors.identifier?.type === 'required' && <ErrorMsg>Required field</ErrorMsg>}
+      <TextField
         type="text"
         placeholder="password"
         name="password"
@@ -43,7 +44,7 @@ export default () => {
       <Button
         type="submit"
         gradient={Gradient.MAIN}
-        loading={loading}
+        loading={loading ? 1 : 0}
         disabled={loading}
       >
         Confirm

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, Gradient } from '../../generalStyles';
+import {
+  Button, ErrorMsg, Gradient, TextField
+} from '../../generalStyles';
 
-import * as S from './styles';
 import useRequest, { Options, State } from '../../hooks/useRequest';
 import { NotificationTypes, useNotification } from '../../contexts/notificationContext';
 
@@ -37,43 +38,43 @@ export default () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <S.TextField
+      <TextField
         type="text"
         placeholder="username"
         name="username"
         ref={register({ required: true, minLength: 4, maxLength: 16 })}
       />
-      {errors.username?.type === 'required' && <S.ErrorMsg>Required field</S.ErrorMsg>}
+      {errors.username?.type === 'required' && <ErrorMsg>Required field</ErrorMsg>}
 
-      <S.TextField
+      <TextField
         type="email"
         placeholder="email"
         name="email"
         ref={register({ required: true, pattern: /^\S+@\S+$/i })}
       />
-      {errors.email?.type === 'required' && <S.ErrorMsg>Required field</S.ErrorMsg>}
-      {errors.email?.type === 'pattern' && <S.ErrorMsg>Invalid email</S.ErrorMsg>}
+      {errors.email?.type === 'required' && <ErrorMsg>Required field</ErrorMsg>}
+      {errors.email?.type === 'pattern' && <ErrorMsg>Invalid email</ErrorMsg>}
 
-      <S.TextField
+      <TextField
         type="password"
         placeholder="password"
         name="password"
         ref={register({ required: true })}
       />
-      {errors.password?.type === 'required' && <S.ErrorMsg>Required field</S.ErrorMsg>}
+      {errors.password?.type === 'required' && <ErrorMsg>Required field</ErrorMsg>}
 
-      <S.TextField
+      <TextField
         type="password"
         placeholder="confirm password"
         name="confirmPassword"
         ref={register({ validate: (value) => value === watchPassword })}
       />
-      {errors.confirmPassword?.type === 'validate' && <S.ErrorMsg>Passwords don&apos;t match</S.ErrorMsg>}
+      {errors.confirmPassword?.type === 'validate' && <ErrorMsg>Passwords don&apos;t match</ErrorMsg>}
 
       <Button
         type="submit"
         gradient={Gradient.MAIN}
-        loading={loading}
+        loading={loading ? 1 : 0}
         disabled={loading}
       >
         Confirm
