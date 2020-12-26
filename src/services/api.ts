@@ -20,7 +20,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
   async (config) => {
-    const existingToken = localStorage.getItem('token');
+    const existingToken = localStorage.getItem('auth_token');
 
     if (existingToken) {
       config.headers.auth = existingToken;
