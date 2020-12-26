@@ -6,12 +6,14 @@ import {
 
 import useRequest, { Options, State } from '../../hooks/useRequest';
 import { NotificationTypes, useNotification } from '../../contexts/notificationContext';
+import { useAuth } from '../../contexts/authContext';
 
 export default () => {
   const [options, setOptions] = useState<Options>(null);
   const [requestData] = useRequest(options);
-  const { error, loading } = requestData as State;
+  const { data, error, loading } = requestData as State;
   const { messageHandler } = useNotification();
+  const { signIn } = useAuth();
 
   const { register, handleSubmit, errors } = useForm();
   const onSubmit = (data: Record<string, any>) => setOptions({
@@ -25,6 +27,13 @@ export default () => {
       messageHandler(error, NotificationTypes.ERROR);
     }
   }, [error]);
+
+  useEffect(() => {
+    if (data) {
+      const { token } = data;
+      signIn(token);
+    }
+  }, [data]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
