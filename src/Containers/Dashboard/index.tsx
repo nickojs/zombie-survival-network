@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../contexts/authContext';
 import { NotificationTypes, useNotification } from '../../contexts/notificationContext';
+import UserList from '../../components/userList';
 
 export default () => {
   const { user } = useAuth();
@@ -22,6 +23,6 @@ export default () => {
   }, [profile]);
 
   return (
-    <p>Hello, im the dashboard. Yes, this is a mock component</p>
+    <UserList />
   );
 };
