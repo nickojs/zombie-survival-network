@@ -5,13 +5,16 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { NotificationProvider } from './contexts/notificationContext';
 import { AuthProvider } from './contexts/authContext';
+import { SurvivorProvider } from './contexts/survivorContext';
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
         <NotificationProvider>
-          <App />
+          <SurvivorProvider>
+            <App />
+          </SurvivorProvider>
         </NotificationProvider>
       </AuthProvider>
     </BrowserRouter>
