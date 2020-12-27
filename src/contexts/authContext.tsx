@@ -28,6 +28,8 @@ interface AuthContextProps {
   user?: User | null;
   signIn(token: string): void;
   signOut(): void;
+  updateProfile(data: UserProfile): void;
+  updateUser(user: User): void;
 }
 
 export const AuthContext = React.createContext<AuthContextProps>(
@@ -53,6 +55,15 @@ export const AuthProvider: React.FC = ({ children }) => {
     history.push('/');
   };
 
+  const updateProfile = (data: UserProfile) => {
+    const updatedUser = { ...user, profile: data } as User;
+    setUser(updatedUser);
+  };
+
+  const updateUser = (user: User) => {
+    setUser(user);
+  };
+
   useEffect(() => {
     const token = localStorage.getItem('auth_token');
     if (token) {
@@ -66,7 +77,9 @@ export const AuthProvider: React.FC = ({ children }) => {
         token,
         user,
         signIn,
-        signOut
+        signOut,
+        updateProfile,
+        updateUser
       }}
     >
       {children}
