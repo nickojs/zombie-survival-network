@@ -38,7 +38,7 @@ export const AuthContext = React.createContext<AuthContextProps>(
 
 export const AuthProvider: React.FC = ({ children }) => {
   const [token, setToken] = useState<string>('');
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<User | null>(null);
 
   const history = useHistory();
 
@@ -51,6 +51,7 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const signOut = () => {
     setToken('');
+    setUser(null);
     localStorage.removeItem('auth_token');
     history.push('/');
   };
