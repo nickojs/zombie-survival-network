@@ -28,9 +28,6 @@ html {
     
   background-color: #131313;
   background-size: 20px 20px;
-
-  border: 12px solid black;
-  border-image: repeating-linear-gradient( -45deg, transparent, transparent 5px, rgba(255, 255, 0, .8) 6px, rgba(255, 255, 0, .8) 10px) 25;
 }
 
 input{
