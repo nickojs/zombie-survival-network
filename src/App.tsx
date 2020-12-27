@@ -1,16 +1,15 @@
 import React from 'react';
-import Auth from './Containers/Auth';
-import Title from './components/UI/text';
+
 import Notification from './components/notification';
+import Navbar from './components/navbar';
+import Routes from './routes';
 
 function App() {
   return (
     <>
+      <Navbar />
       <Notification />
-      <Title text="S.N.I. - Survival Network Interface" />
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <Auth />
-      </div>
+      <Routes />
     </>
   );
 }
