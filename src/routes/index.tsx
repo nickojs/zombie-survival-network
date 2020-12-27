@@ -59,9 +59,11 @@ const Routes = () => {
 
   return (
     <Switch>
-      {token
-        ? <PrivateRoutes />
-        : <RegularRoutes />}
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        {token
+          ? <PrivateRoutes />
+          : <RegularRoutes />}
+      </div>
     </Switch>
 
   );
