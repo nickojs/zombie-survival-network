@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useAuth, UserProfile } from '../../contexts/authContext';
 import { NotificationTypes, useNotification } from '../../contexts/notificationContext';
 import {
   Button, Container, ErrorMsg, Gradient, TextField, Title
@@ -8,20 +9,22 @@ import useRequest, { Options, State } from '../../hooks/useRequest';
 import * as S from './styles';
 
 export default () => {
-  const { register, handleSubmit, errors } = useForm();
+  const {
+    register, handleSubmit, errors, setValue
+  } = useForm();
   const [options, setOptions] = useState<Options>(null);
   const [requestData] = useRequest(options);
   const { data, error, loading } = requestData as State;
+
   const { messageHandler } = useNotification();
+  const { updateProfile, user } = useAuth();
+  const { profile } = user || { };
 
-  // const onSubmit = (data: Record<string, any>) => setOptions({
-  //   method: 'POST',
-  //   url: 'user/',
-  //   data
-  // });
-
-  // needs user id to create/edit its user_profile
-  const onSubmit = (data: Record<string, any>) => console.log(data);
+  const onSubmit = (data: Record<string, any>) => setOptions({
+    method: 'PUT',
+    url: 'user/profile',
+    data: { ...data, age: +data.age }
+  });
 
   useEffect(() => {
     if (error) {
@@ -32,8 +35,18 @@ export default () => {
   useEffect(() => {
     if (data) {
       messageHandler(data.message, NotificationTypes.SUCCESS);
+      updateProfile(data.profile);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (profile) {
+      Object.keys(profile).forEach((e: string) => {
+        const value = profile[e as keyof UserProfile];
+        setValue(e, value);
+      });
+    }
+  }, [profile]);
 
   return (
     <Container>
@@ -42,10 +55,10 @@ export default () => {
         <TextField
           type="text"
           placeholder="name"
-          name="name"
+          name="fullName"
           ref={register({ required: true })}
         />
-        {errors.name?.type === 'required' && <ErrorMsg>Required field</ErrorMsg>}
+        {errors.fullName?.type === 'required' && <ErrorMsg>Required field</ErrorMsg>}
 
         <TextField
           type="number"
@@ -76,7 +89,7 @@ export default () => {
           loading={loading ? 1 : 0}
           disabled={loading}
         >
-          Confirm
+          {profile ? 'Update' : 'Create'}
         </Button>
       </form>
     </Container>
