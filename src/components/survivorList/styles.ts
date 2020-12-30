@@ -36,6 +36,10 @@ export const SurvivorCard = styled.div<UserPreviewProps>`
      rgba(0, 0, 0, 0.4) 20px, 
      rgba(0, 0, 0, 0.4) 40px`)
 });
+
+  :hover{
+    background-color: rgba(255, 255, 255, 0.6);
+  }
 `;
 
 export const SubCard = styled.div`
