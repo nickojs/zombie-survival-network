@@ -34,7 +34,12 @@ export default () => {
 
       <S.ListContainer>
         {loading && <p>Loading...</p>}
-        {users && users.map((user: CompactUser) => <UserPreview user={user} />) }
+        {users && users.map((user: CompactUser) => (
+          <UserPreview
+            key={user.id}
+            user={user}
+          />
+        )) }
       </S.ListContainer>
     </Container>
   );

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { UserProfile } from '../../contexts/authContext';
 import { NotificationTypes, useNotification } from '../../contexts/notificationContext';
+import { useSurvivor } from '../../contexts/survivorContext';
 import useRequest, { Options, State } from '../../hooks/useRequest';
 import * as S from './styles';
 
@@ -21,6 +22,8 @@ export default ({ user }: UserPreviewProps) => {
   const { messageHandler } = useNotification();
   const { profile } = user;
 
+  const { survivorHandler } = useSurvivor();
+
   const fetchSelectedSurvivor = () => {
     setOptions({
       method: 'GET',
@@ -29,7 +32,7 @@ export default ({ user }: UserPreviewProps) => {
   };
 
   useEffect(() => {
-    if (data) console.log(data); // send to survivorContext
+    if (data) survivorHandler(data as CompactUser);
   }, [data]);
 
   useEffect(() => {
