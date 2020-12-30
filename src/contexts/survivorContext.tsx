@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { CompactUser } from '../components/userList/user';
+import { CompactUser } from '../models/user';
 
 interface SurvivorContextProps {
   survivor: CompactUser | null;

@@ -2,25 +2,11 @@ import React, { useContext, useEffect, useState } from 'react';
 // eslint-disable-next-line camelcase
 import jwt_decode from 'jwt-decode';
 import { useHistory } from 'react-router-dom';
+import { User, UserProfile } from '../models/user';
 
 export enum Gender {
   MALE = 'male',
   FEMALE = 'female'
-}
-
-export interface UserProfile {
-  id: string;
-  fullName: string;
-  age: number;
-  gender: Gender
-}
-
-export interface User {
-  userId: string;
-  iat: number;
-  email: string;
-  username: string;
-  profile: UserProfile | null;
 }
 
 interface AuthContextProps {

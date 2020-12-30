@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../contexts/authContext';
 import { NotificationTypes, useNotification } from '../../contexts/notificationContext';
-import UserList from '../../components/userList';
+import SurvivorList from '../../components/survivorList';
 
 export default () => {
   const { user } = useAuth();
@@ -23,6 +23,6 @@ export default () => {
   }, [profile]);
 
   return (
-    <UserList />
+    <SurvivorList />
   );
 };

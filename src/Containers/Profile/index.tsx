@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useAuth, UserProfile } from '../../contexts/authContext';
+import { useAuth } from '../../contexts/authContext';
 import { NotificationTypes, useNotification } from '../../contexts/notificationContext';
 import {
   Button, Container, ErrorMsg, Gradient, TextField, Title
 } from '../../generalStyles';
 import useRequest, { Options, State } from '../../hooks/useRequest';
+import { UserProfile } from '../../models/user';
 import * as S from './styles';
 
 export default () => {

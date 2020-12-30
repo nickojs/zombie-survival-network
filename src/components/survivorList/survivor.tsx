@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { UserProfile } from '../../contexts/authContext';
 import { NotificationTypes, useNotification } from '../../contexts/notificationContext';
 import { useSurvivor } from '../../contexts/survivorContext';
 import useRequest, { Options, State } from '../../hooks/useRequest';
+import { CompactUser } from '../../models/user';
 import * as S from './styles';
 
-export interface CompactUser {
-  id: string;
-  username?: string;
-  profile: UserProfile;
-}
 interface UserPreviewProps {
   user: CompactUser;
 }
