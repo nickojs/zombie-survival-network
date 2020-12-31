@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 // eslint-disable-next-line camelcase
 import jwt_decode from 'jwt-decode';
-import { useHistory } from 'react-router-dom';
 import { User, UserProfile } from '../models/user';
 
 export enum Gender {
@@ -26,8 +25,6 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [token, setToken] = useState<string>('');
   const [user, setUser] = useState<User | null>(null);
 
-  const history = useHistory();
-
   const signIn = (token: string) => {
     setToken(token);
     const data = jwt_decode(token) as User;
@@ -39,7 +36,6 @@ export const AuthProvider: React.FC = ({ children }) => {
     setToken('');
     setUser(null);
     localStorage.removeItem('auth_token');
-    history.push('/');
   };
 
   const updateProfile = (data: UserProfile) => {
