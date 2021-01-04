@@ -7,12 +7,14 @@ import SurvivorList from '../components/survivorList';
 const Modules = [
   {
     id: 'profile',
+    name: 'Profile',
     Component: Profile,
     display: false,
     isDockable: false
   },
   {
     id: 'survivorList',
+    name: 'Survivors',
     Component: SurvivorList,
     display: true,
     isDockable: true
@@ -21,6 +23,7 @@ const Modules = [
 
 export interface Module {
   id: string;
+  name: string;
   Component: FunctionComponent;
   display: boolean;
   isDockable: boolean;

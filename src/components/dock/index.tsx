@@ -31,7 +31,7 @@ export default () => {
             role="button"
             onClick={() => toggleModule(module.id)}
           >
-            {module.id}
+            {module.name}
           </S.MenuItem>
         ))}
       </S.FootContainer>
