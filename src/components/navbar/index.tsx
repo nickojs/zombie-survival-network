@@ -1,6 +1,8 @@
 import React from 'react';
 import { CgProfile } from 'react-icons/cg';
 import { ImExit } from 'react-icons/im';
+import { MdGpsFixed } from 'react-icons/md';
+
 import { useAuth } from '../../contexts/authContext';
 import { useModules } from '../../contexts/modulesContext';
 import * as S from './styles';
@@ -16,6 +18,9 @@ export default () => {
       <S.IconButtonContainer>
         <S.IconButton onClick={() => toggleModule('profile')}>
           <CgProfile />
+        </S.IconButton>
+        <S.IconButton onClick={() => toggleModule('location')}>
+          <MdGpsFixed />
         </S.IconButton>
         <S.IconButton onClick={signOut}>
           <ImExit />

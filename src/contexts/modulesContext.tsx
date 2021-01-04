@@ -3,6 +3,7 @@ import React, { FunctionComponent, useContext, useState } from 'react';
 // available modules
 import Profile from '../components/profile';
 import SurvivorList from '../components/survivorList';
+import Location from '../components/location';
 
 const Modules = [
   {
@@ -18,6 +19,13 @@ const Modules = [
     Component: SurvivorList,
     display: true,
     isDockable: true
+  },
+  {
+    id: 'location',
+    name: 'Location',
+    Component: Location,
+    display: false,
+    isDockable: false
   }
 ];
 
