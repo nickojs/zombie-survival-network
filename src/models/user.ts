@@ -1,9 +1,15 @@
 import { Gender } from '../contexts/authContext';
 
+interface Location {
+  latitude: number;
+  longitude: number;
+}
+
 export interface CompactUser {
   id: string;
   username?: string;
   profile: UserProfile;
+  location: Location;
 }
 
 export interface UserProfile {
