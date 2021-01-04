@@ -6,6 +6,7 @@ import { CompactUser } from '../../models/user';
 import * as S from './styles';
 import { Container, Title } from '../../generalStyles';
 import SurvivorPreview from './survivor';
+import { useModules } from '../../contexts/modulesContext';
 
 export default () => {
   const [users, setUsers] = useState<CompactUser[]>();
@@ -13,6 +14,7 @@ export default () => {
   const [requestData] = useRequest(options);
   const { data, error, loading } = requestData as State;
   const { messageHandler } = useNotification();
+  const { toggleModule } = useModules();
 
   useEffect(() => {
     setOptions({
@@ -31,7 +33,11 @@ export default () => {
 
   return (
     <Container>
-      <Title>Survivors</Title>
+      <Title
+        onClick={() => toggleModule('survivorList')}
+      >
+        Survivors
+      </Title>
 
       <S.ListContainer>
         {loading && <p>Loading...</p>}
