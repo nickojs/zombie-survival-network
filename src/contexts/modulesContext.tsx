@@ -1,10 +1,11 @@
 import React, { FunctionComponent, useContext, useState } from 'react';
+import { below, middle, right } from '../constant';
 
 // available modules
 import Profile from '../components/profile';
 import SurvivorList from '../components/survivorList';
+import Survivor from '../components/survivorDetails';
 import Location from '../components/location';
-import { below, right } from '../constant';
 
 const Modules = [
   {
@@ -26,6 +27,17 @@ const Modules = [
     isDockable: true,
     screenPos: {
       x: 0,
+      y: 0
+    }
+  },
+  {
+    id: 'survivor',
+    name: 'Details',
+    Component: Survivor,
+    display: true,
+    isDockable: true,
+    screenPos: {
+      x: middle,
       y: 0
     }
   },
