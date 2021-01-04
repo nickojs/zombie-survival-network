@@ -4,6 +4,7 @@ import React, { FunctionComponent, useContext, useState } from 'react';
 import Profile from '../components/profile';
 import SurvivorList from '../components/survivorList';
 import Location from '../components/location';
+import { below, right } from '../constant';
 
 const Modules = [
   {
@@ -11,21 +12,33 @@ const Modules = [
     name: 'Profile',
     Component: Profile,
     display: false,
-    isDockable: false
+    isDockable: false,
+    screenPos: {
+      x: right,
+      y: 0
+    }
   },
   {
     id: 'survivorList',
     name: 'Survivors',
     Component: SurvivorList,
     display: true,
-    isDockable: true
+    isDockable: true,
+    screenPos: {
+      x: 0,
+      y: 0
+    }
   },
   {
     id: 'location',
     name: 'Location',
     Component: Location,
     display: false,
-    isDockable: false
+    isDockable: false,
+    screenPos: {
+      x: right,
+      y: below
+    }
   }
 ];
 
@@ -35,6 +48,7 @@ export interface Module {
   Component: FunctionComponent;
   display: boolean;
   isDockable: boolean;
+  screenPos?: { x: number; y: number };
 }
 
 interface ModulesContextProps {

@@ -30,11 +30,13 @@ export default () => {
           {activeModules.map((module) => {
             if (!module.display) return;
 
-            const { Component, id } = module;
+            const { Component, id, screenPos } = module;
             return (
               <Rnd
                 key={id}
                 bounds=".limiter"
+                // @ts-ignore - ignoring 'default' because it is badly typed
+                default={screenPos || undefined}
               >
                 <Component />
               </Rnd>
