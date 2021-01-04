@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const FlexBase = styled.div`
   display: flex;
@@ -7,7 +7,23 @@ const FlexBase = styled.div`
   align-items: center;
 `;
 
-export const IconButton = styled.div`
+interface IconButtonProps {
+  selected?: number
+}
+
+const defaultBtn = css`
+  color: black;
+  background: yellow;
+  box-shadow: 2px 2px 4px black;
+`;
+
+const selectedBtn = css`
+  color: lime;
+  background: black;
+  box-shadow: 2px 2px 4px black;
+`;
+
+export const IconButton = styled.div<IconButtonProps>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -25,6 +41,8 @@ export const IconButton = styled.div`
   
   transition: .5s;
   cursor: pointer;
+  
+  ${({ selected }) => (selected ? selectedBtn : defaultBtn)};
 
   &:active { box-shadow: -2px -2px 4px black; }
 `;

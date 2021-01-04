@@ -9,17 +9,23 @@ import * as S from './styles';
 
 export default () => {
   const { token, signOut } = useAuth();
-  const { toggleModule } = useModules();
+  const { toggleModule, isSelected } = useModules();
 
   return (
     <S.NavbarContainer>
       <S.Title>S.N.I. - Survival Network Interface</S.Title>
       {token && (
       <S.IconButtonContainer>
-        <S.IconButton onClick={() => toggleModule('profile')}>
+        <S.IconButton
+          selected={isSelected('profile') ? 1 : 0}
+          onClick={() => toggleModule('profile')}
+        >
           <CgProfile />
         </S.IconButton>
-        <S.IconButton onClick={() => toggleModule('location')}>
+        <S.IconButton
+          selected={isSelected('location') ? 1 : 0}
+          onClick={() => toggleModule('location')}
+        >
           <MdGpsFixed />
         </S.IconButton>
         <S.IconButton onClick={signOut}>

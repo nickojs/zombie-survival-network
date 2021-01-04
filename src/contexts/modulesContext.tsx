@@ -54,6 +54,7 @@ export interface Module {
 interface ModulesContextProps {
   modules: Module[];
   toggleModule(moduleId: string): void;
+  isSelected(moduleId: string): boolean;
 }
 
 export const ModulesContext = React.createContext<ModulesContextProps>(
@@ -74,11 +75,18 @@ export const ModulesProvider: React.FC = ({ children }) => {
     setModules(copyState);
   };
 
+  const isSelected = (moduleId: string) => {
+    const module = modules.find((module) => module.id === moduleId);
+    if (!module) return false;
+    return module.display;
+  };
+
   return (
     <ModulesContext.Provider
       value={{
         modules,
-        toggleModule
+        toggleModule,
+        isSelected
       }}
     >
       {children}
