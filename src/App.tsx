@@ -1,15 +1,16 @@
 import React from 'react';
-
 import Notification from './components/notification';
 import Navbar from './components/navbar';
-import Routes from './routes';
+import Dock from './components/dock';
+import Desktop from './Containers/Desktop';
 
 function App() {
   return (
     <>
-      <Navbar />
       <Notification />
-      <Routes />
+      <Navbar />
+      <Desktop />
+      <Dock />
     </>
   );
 }
