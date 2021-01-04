@@ -25,18 +25,15 @@ export default () => {
         {menu ? <MdArrowDropDown /> : <MdArrowDropUp />}
       </S.ToggleButton>
       <S.FootContainer show={menu ? 1 : 0}>
-        {dockedModules.map((module) => {
-          const { id } = module;
-          return (
-            <button
-              type="button"
-              key={id}
-              onClick={() => toggleModule(id)}
-            >
-              {id}
-            </button>
-          );
-        })}
+        {dockedModules.map((module) => (
+          <S.MenuItem
+            key={module.id}
+            role="button"
+            onClick={() => toggleModule(module.id)}
+          >
+            {module.id}
+          </S.MenuItem>
+        ))}
       </S.FootContainer>
     </S.Footer>
   );

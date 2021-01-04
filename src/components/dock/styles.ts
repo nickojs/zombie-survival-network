@@ -9,11 +9,15 @@ export const Footer = styled.footer`
 `;
 
 export const FootContainer = styled(Container)<{ show: number }>`
-  transition: .5s;
+  display: flex;
+  justify-content: flex-start;
+  flex-flow: row wrap;
+
   margin: 0;
-  
   width: 100%;
   height: ${({ show }) => (show ? '90px' : '0px')};
+
+  transition: .5s;
 `;
 
 export const ToggleButton = styled(Title)`
@@ -26,4 +30,22 @@ export const ToggleButton = styled(Title)`
   
   font-size: 2em;
   color: lime;
+`;
+
+export const MenuItem = styled(Title)`
+  width: 25%;
+  margin: 12px; 
+
+  color: lime;
+  transition: .5s;
+
+  cursor: pointer;
+
+  :hover{ 
+    color: white;
+  }
+
+  :active {
+    border: 1px inset grey;
+  }
 `;
