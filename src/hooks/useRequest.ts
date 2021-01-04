@@ -77,7 +77,7 @@ export default (options: Options) => {
       dispatch({ type: ActionTypes.DATA, data: request.data });
     } catch (err) {
       if (err.response) {
-        dispatch({ type: ActionTypes.ERROR, error: err.response.data.message });
+        dispatch({ type: ActionTypes.ERROR, error: err.response.data?.message || 'Something went wrong' });
       } else if (err.request) {
         dispatch({ type: ActionTypes.ERROR, error: 'Couldn\'t reach server.' });
       } else {
