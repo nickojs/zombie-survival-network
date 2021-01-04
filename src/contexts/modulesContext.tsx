@@ -43,7 +43,7 @@ export const ModulesProvider: React.FC = ({ children }) => {
     const module = copyState.find((module) => module.id === moduleId);
     const moduleIndex = copyState.findIndex((module) => module.id === moduleId);
 
-    if (!module || !moduleIndex) return;
+    if (!module || moduleIndex === -1) return;
     module.display = !module.display;
     copyState.splice(moduleIndex, 1, module);
     setModules(copyState);
