@@ -6,6 +6,7 @@ import { Gender } from '../../contexts/authContext';
 
 interface UserPreviewProps {
   infected: number;
+  select: number;
 }
 
 interface GenderProps {
@@ -37,9 +38,9 @@ export const SurvivorCard = styled.div<UserPreviewProps>`
      rgba(0, 0, 0, 0.4) 40px`)
 });
 
-  :hover{
-    background-color: rgba(255, 255, 255, 0.6);
-  }
+  :hover{ background-color: rgba(255, 255, 255, 0.6); }
+
+  ${({ select }) => select && 'background-color: rgba(0, 255, 255, 0.6)'}
 `;
 
 export const SubCard = styled.div`

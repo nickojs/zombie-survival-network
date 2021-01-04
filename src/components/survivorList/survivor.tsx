@@ -17,9 +17,10 @@ export default ({ user }: UserPreviewProps) => {
   const { messageHandler } = useNotification();
   const { profile } = user;
 
-  const { survivorHandler } = useSurvivor();
+  const { survivorHandler, survivor } = useSurvivor();
 
   const fetchSelectedSurvivor = () => {
+    if (survivor?.id === user.id) return;
     setOptions({
       method: 'GET',
       url: `/user/${user.id}`
@@ -37,6 +38,7 @@ export default ({ user }: UserPreviewProps) => {
   return profile && (
     <S.SurvivorCard
       infected={0}
+      select={survivor?.id === user.id ? 1 : 0}
       onClick={fetchSelectedSurvivor}
     >
       <S.SubCard>
