@@ -38,7 +38,7 @@ export default () => {
       setOptions({
         method: 'PUT',
         url: 'user/location',
-        data: { location }
+        data: location
       });
     }
   }, [location]);
