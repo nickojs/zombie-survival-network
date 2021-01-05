@@ -45,7 +45,7 @@ export default () => {
       />
       {errors.identifier?.type === 'required' && <ErrorMsg>Required field</ErrorMsg>}
       <TextField
-        type="text"
+        type="password"
         placeholder="password"
         name="password"
         ref={register}
