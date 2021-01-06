@@ -9,6 +9,7 @@ import {
 import useRequest, { Options, State } from '../../../hooks/useRequest';
 import { NotificationTypes, useNotification } from '../../../contexts/notificationContext';
 import { useAuth } from '../../../contexts/authContext';
+import { formatPlural } from '../../../helpers/formatFlags';
 
 export default () => {
   const [position, setPosition] = useState<LatLng | null>(null);
@@ -89,11 +90,9 @@ export default () => {
       <Block>
         {survivor.flags && (
         <p>
-          This user was flagged
+          This user
           {' '}
-          {survivor.flags.length}
-          {' '}
-          times
+          {formatPlural(survivor.flags.length, 'flagged')}
         </p>
         )}
         <Button
