@@ -32,8 +32,8 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const updateUser = async () => {
     setOptions({
-      method: 'GET',
-      url: 'user/'
+      method: 'POST',
+      url: 'user/self'
     });
   };
 
