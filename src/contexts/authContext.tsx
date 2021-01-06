@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-// eslint-disable-next-line camelcase
-import jwt_decode from 'jwt-decode';
-import { User, UserProfile } from '../models/user';
+import { User } from '../models/user';
+import api from '../services/api';
 
 export enum Gender {
   MALE = 'male',
@@ -13,8 +12,7 @@ interface AuthContextProps {
   user?: User | null;
   signIn(token: string): void;
   signOut(): void;
-  updateProfile(data: UserProfile): void;
-  updateUser(user: User): void;
+  updateUser(): void;
 }
 
 export const AuthContext = React.createContext<AuthContextProps>(
@@ -25,26 +23,24 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [token, setToken] = useState<string>('');
   const [user, setUser] = useState<User | null>(null);
 
-  const signIn = (token: string) => {
+  const signIn = async (token: string) => {
     setToken(token);
-    const data = jwt_decode(token) as User;
-    setUser(data);
     localStorage.setItem('auth_token', token);
+
+    await updateUser();
+  };
+
+  const updateUser = async () => {
+    const request = await api.post('/user/self');
+    const { data }: { data: User } = request;
+
+    setUser(data);
   };
 
   const signOut = () => {
     setToken('');
     setUser(null);
     localStorage.removeItem('auth_token');
-  };
-
-  const updateProfile = (data: UserProfile) => {
-    const updatedUser = { ...user, profile: data } as User;
-    setUser(updatedUser);
-  };
-
-  const updateUser = (user: User) => {
-    setUser(user);
   };
 
   useEffect(() => {
@@ -61,7 +57,6 @@ export const AuthProvider: React.FC = ({ children }) => {
         user,
         signIn,
         signOut,
-        updateProfile,
         updateUser
       }}
     >

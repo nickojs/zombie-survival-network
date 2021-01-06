@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useAuth } from '../../contexts/authContext';
 import { NotificationTypes, useNotification } from '../../contexts/notificationContext';
 import {
   Button, Container, Gradient, Title
@@ -18,6 +19,8 @@ export default () => {
   const { data, loading, error } = requestData as State;
 
   const { messageHandler } = useNotification();
+
+  const { user, updateUser } = useAuth();
 
   const locationHandler = () => {
     navigator.geolocation.getCurrentPosition(
@@ -44,18 +47,35 @@ export default () => {
   }, [location]);
 
   useEffect(() => {
-    if (data) messageHandler(data.message, NotificationTypes.SUCCESS);
+    if (data) {
+      messageHandler(data.message, NotificationTypes.SUCCESS);
+      updateUser();
+    }
   }, [data]);
 
   useEffect(() => {
     if (error) messageHandler(error, NotificationTypes.ERROR);
   }, [error]);
 
+  useEffect(() => { updateUser(); }, []);
+
   return (
     <Container>
       <Title>Location</Title>
-      <p>Use this module to set your current location.</p>
-      <p>Due to fraud related issues, the location should be provided by the browser</p>
+      {!user?.location && (
+        <p>Use this module to set your current location.</p>
+      )}
+      {user?.location && (
+        <p>
+          Your current location is set at: Lat
+          {' '}
+          {user.location.latitude}
+          {' '}
+          Lon:
+          {' '}
+          {user.location.longitude}
+        </p>
+      )}
       <hr />
       <Button
         type="button"

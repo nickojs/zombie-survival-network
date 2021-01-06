@@ -18,7 +18,7 @@ export default () => {
   const { data, error, loading } = requestData as State;
 
   const { messageHandler } = useNotification();
-  const { updateProfile, user } = useAuth();
+  const { user, updateUser } = useAuth();
   const { profile } = user || { };
 
   const onSubmit = (data: Record<string, any>) => setOptions({
@@ -36,7 +36,7 @@ export default () => {
   useEffect(() => {
     if (data) {
       messageHandler(data.message, NotificationTypes.SUCCESS);
-      updateProfile(data.profile);
+      updateUser();
     }
   }, [data]);
 
