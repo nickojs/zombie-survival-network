@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Rnd } from 'react-rnd';
+
 import { useAuth } from '../../contexts/authContext';
 import { useModules, Module } from '../../contexts/modulesContext';
 

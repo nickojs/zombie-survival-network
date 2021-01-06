@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
-import * as S from './styles';
 import { Container, Title } from '../../../generalStyles';
-import SurvivorPreview from './survivor';
 import { useModules } from '../../../contexts/modulesContext';
 import { Survivor, useSurvivor } from '../../../contexts/survivorContext';
+
+import SurvivorPreview from './survivor';
+
+import * as S from './styles';
 
 export default () => {
   const [localSurvivors, setLocalSurvivors] = useState<Survivor[]>();

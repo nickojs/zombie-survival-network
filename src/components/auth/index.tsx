@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
+import RegisterForm from './registerForm';
+import LoginForm from './loginForm';
 import {
   Block, Container, Title, Button, Gradient
 } from '../../generalStyles';
-import RegisterForm from './registerForm';
-import LoginForm from './loginForm';
 
 enum AuthType {
   LOGIN,

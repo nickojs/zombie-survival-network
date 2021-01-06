@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import {
-  Button, ErrorMsg, Gradient, TextField
-} from '../../generalStyles';
 
 import useRequest, { Options, State } from '../../hooks/useRequest';
 import { NotificationTypes, useNotification } from '../../contexts/notificationContext';
+
+import {
+  Button, ErrorMsg, Gradient, TextField
+} from '../../generalStyles';
 
 export default () => {
   const {

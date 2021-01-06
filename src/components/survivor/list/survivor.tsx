@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+
+import useRequest, { Options, State } from '../../../hooks/useRequest';
 import { NotificationTypes, useNotification } from '../../../contexts/notificationContext';
 import { useSurvivor, Survivor } from '../../../contexts/survivorContext';
-import useRequest, { Options, State } from '../../../hooks/useRequest';
+
 import * as S from './styles';
 
 interface UserPreviewProps {

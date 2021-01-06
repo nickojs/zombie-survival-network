@@ -5,6 +5,7 @@ import { MdGpsFixed } from 'react-icons/md';
 
 import { useAuth } from '../../contexts/authContext';
 import { useModules } from '../../contexts/modulesContext';
+
 import * as S from './styles';
 
 export default () => {

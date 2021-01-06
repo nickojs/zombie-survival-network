@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { useNotification } from '../../contexts/notificationContext';
+
 import * as S from './styles';
 
 export default () => {

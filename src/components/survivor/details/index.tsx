@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import { LatLng } from 'leaflet';
+
+import useRequest, { Options, State } from '../../../hooks/useRequest';
+import { NotificationTypes, useNotification } from '../../../contexts/notificationContext';
 import { useModules } from '../../../contexts/modulesContext';
 import { useSurvivor } from '../../../contexts/survivorContext';
+import { useAuth } from '../../../contexts/authContext';
+import { formatPlural } from '../../../helpers/formatFlags';
+
 import {
   Block, Button, Container, Gradient, Title
 } from '../../../generalStyles';
-import useRequest, { Options, State } from '../../../hooks/useRequest';
-import { NotificationTypes, useNotification } from '../../../contexts/notificationContext';
-import { useAuth } from '../../../contexts/authContext';
-import { formatPlural } from '../../../helpers/formatFlags';
 
 export default () => {
   const [position, setPosition] = useState<LatLng | null>(null);

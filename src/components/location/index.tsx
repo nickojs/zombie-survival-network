@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useAuth } from '../../contexts/authContext';
+
+import useRequest, { Options, State } from '../../hooks/useRequest';
 import { NotificationTypes, useNotification } from '../../contexts/notificationContext';
+import { useAuth } from '../../contexts/authContext';
+
 import {
   Button, Container, Gradient, Title
 } from '../../generalStyles';
-import useRequest, { Options, State } from '../../hooks/useRequest';
 
 interface Coords {
   latitude: number;
