@@ -10,7 +10,7 @@ import Auth from '../../components/auth';
 export default () => {
   const [activeModules, setActiveModules] = useState<Module[]>([]);
   const { token } = useAuth();
-  const { modules } = useModules();
+  const { modules, updatePosition } = useModules();
 
   useEffect(() => {
     const filterModules = modules.filter((mo) => mo.display);
@@ -38,6 +38,9 @@ export default () => {
                 bounds=".limiter"
                 // @ts-ignore - ignoring 'default' because it is badly typed
                 default={screenPos || undefined}
+                onDragStop={(e, data) => {
+                  updatePosition(id, { x: data.x, y: data.y });
+                }}
               >
                 <Component />
               </Rnd>
