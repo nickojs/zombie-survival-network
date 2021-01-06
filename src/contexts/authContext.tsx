@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { User } from '../models/user';
-import api from '../services/api';
+import useRequest, { Options, State } from '../hooks/useRequest';
+import { NotificationTypes, useNotification } from './notificationContext';
 
 export enum Gender {
   MALE = 'male',
@@ -23,18 +24,24 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [token, setToken] = useState<string>('');
   const [user, setUser] = useState<User | null>(null);
 
+  const [options, setOptions] = useState<Options>(null);
+  const [requestData] = useRequest(options);
+  const { data, error } = requestData as State;
+
+  const { messageHandler } = useNotification();
+
+  const updateUser = async () => {
+    setOptions({
+      method: 'GET',
+      url: 'user/'
+    });
+  };
+
   const signIn = async (token: string) => {
     setToken(token);
     localStorage.setItem('auth_token', token);
 
     await updateUser();
-  };
-
-  const updateUser = async () => {
-    const request = await api.post('/user/self');
-    const { data }: { data: User } = request;
-
-    setUser(data);
   };
 
   const signOut = () => {
@@ -49,6 +56,19 @@ export const AuthProvider: React.FC = ({ children }) => {
       signIn(token);
     }
   }, []);
+
+  useEffect(() => {
+    if (data) {
+      setUser(data as User);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (error) {
+      messageHandler('Something is wrong with your authorization, please log in again', NotificationTypes.ERROR);
+      signOut();
+    }
+  }, [error]);
 
   return (
     <AuthContext.Provider

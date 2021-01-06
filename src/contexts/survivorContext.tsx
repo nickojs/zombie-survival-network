@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
+import useRequest, { Options, State } from '../hooks/useRequest';
 import { User, UserProfile } from '../models/user';
-import api from '../services/api';
+import { useAuth } from './authContext';
+import { NotificationTypes, useNotification } from './notificationContext';
 
 export interface Survivor extends User {
   profile: UserProfile;
@@ -9,6 +11,7 @@ export interface Survivor extends User {
 interface SurvivorContextProps {
   survivor: Survivor | null;
   survivorList: Survivor[] | undefined;
+  loading: boolean;
   survivorHandler(survivor: Survivor): void;
   updateSurvivorList(): void;
 }
@@ -21,24 +24,45 @@ export const SurvivorProvider: React.FC = ({ children }) => {
   const [survivor, setSurvivor] = useState<Survivor | null>(null);
   const [survivorList, setSurvivorList] = useState<Survivor[]>();
 
-  const updateSurvivorList = async () => {
-    const request = await api.get('/user/');
-    const { data }: { data: Survivor[] } = request;
+  const [options, setOptions] = useState<Options>(null);
+  const [requestData] = useRequest(options);
+  const { data, error, loading } = requestData as State;
 
-    setSurvivorList(data);
+  const { messageHandler } = useNotification();
+  const { token } = useAuth();
+
+  const updateSurvivorList = async () => {
+    setOptions({
+      method: 'GET',
+      url: 'user/'
+    });
   };
 
   const survivorHandler = (survivor: Survivor) => setSurvivor(survivor);
 
   useEffect(() => {
-    updateSurvivorList();
-  }, []);
+    if (token) updateSurvivorList();
+  }, [token]);
+
+  useEffect(() => {
+    if (error) {
+      messageHandler(error, NotificationTypes.ERROR);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (data) {
+      messageHandler(data.message, NotificationTypes.SUCCESS);
+      setSurvivorList(data as Survivor[]);
+    }
+  }, [data]);
 
   return (
     <SurvivorContext.Provider
       value={{
         survivor,
         survivorList,
+        loading,
         survivorHandler,
         updateSurvivorList
       }}
