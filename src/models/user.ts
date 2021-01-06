@@ -25,4 +25,5 @@ export interface User {
   email: string;
   username: string;
   profile: UserProfile | null;
+  location: Location;
 }
