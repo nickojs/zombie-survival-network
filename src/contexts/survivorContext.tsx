@@ -1,5 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { User, UserProfile } from '../models/user';
+import api from '../services/api';
 
 export interface Survivor extends User {
   profile: UserProfile;
@@ -7,7 +8,9 @@ export interface Survivor extends User {
 
 interface SurvivorContextProps {
   survivor: Survivor | null;
+  survivorList: Survivor[] | undefined;
   survivorHandler(survivor: Survivor): void;
+  updateSurvivorList(): void;
 }
 
 export const SurvivorContext = React.createContext<SurvivorContextProps>(
@@ -16,14 +19,28 @@ export const SurvivorContext = React.createContext<SurvivorContextProps>(
 
 export const SurvivorProvider: React.FC = ({ children }) => {
   const [survivor, setSurvivor] = useState<Survivor | null>(null);
+  const [survivorList, setSurvivorList] = useState<Survivor[]>();
+
+  const updateSurvivorList = async () => {
+    const request = await api.get('/user/');
+    const { data }: { data: Survivor[] } = request;
+
+    setSurvivorList(data);
+  };
 
   const survivorHandler = (survivor: Survivor) => setSurvivor(survivor);
+
+  useEffect(() => {
+    updateSurvivorList();
+  }, []);
 
   return (
     <SurvivorContext.Provider
       value={{
         survivor,
-        survivorHandler
+        survivorList,
+        survivorHandler,
+        updateSurvivorList
       }}
     >
       {children}

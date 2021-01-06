@@ -3,10 +3,9 @@ import { NotificationTypes, useNotification } from '../../../contexts/notificati
 import { useSurvivor, Survivor } from '../../../contexts/survivorContext';
 import useRequest, { Options, State } from '../../../hooks/useRequest';
 import * as S from './styles';
-import { CompactUser } from '.';
 
 interface UserPreviewProps {
-  user: CompactUser;
+  user: Survivor;
 }
 
 export default ({ user }: UserPreviewProps) => {

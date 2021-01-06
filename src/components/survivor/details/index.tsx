@@ -21,7 +21,7 @@ export default () => {
   const { toggleModule } = useModules();
   const { messageHandler } = useNotification();
   const { user } = useAuth();
-  const { survivor } = useSurvivor();
+  const { survivor, updateSurvivorList } = useSurvivor();
   const { location } = survivor || {};
 
   const flagSurvivorHandler = () => setOptions({
@@ -40,11 +40,19 @@ export default () => {
   }, [location]);
 
   useEffect(() => {
-    if (data) messageHandler(data.message, NotificationTypes.SUCCESS);
+    if (data) {
+      messageHandler(data.message, NotificationTypes.SUCCESS);
+      updateSurvivorList();
+      setFlagged(true);
+    }
   }, [data]);
 
   useEffect(() => {
-    if (error) messageHandler(error, NotificationTypes.ERROR);
+    if (error) {
+      messageHandler(error, NotificationTypes.ERROR);
+      updateSurvivorList();
+      setFlagged(false);
+    }
   }, [error]);
 
   useEffect(() => {
