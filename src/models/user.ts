@@ -8,7 +8,7 @@ interface Location {
 interface Flag {
   id: number;
   user: User;
-  flaggedBy: User;
+  flaggedBy: string;
   createdAt: Date;
 }
 
@@ -25,5 +25,5 @@ export interface User {
   email: string;
   profile?: UserProfile;
   location?: Location;
-  flags?: Flag;
+  flags?: Flag[];
 }
