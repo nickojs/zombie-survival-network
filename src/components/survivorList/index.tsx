@@ -11,6 +11,7 @@ import { useModules } from '../../contexts/modulesContext';
 export interface CompactUser {
   id: string;
   profile: UserProfile;
+  flags: string[];
 }
 
 export default () => {

@@ -15,7 +15,7 @@ export default ({ user }: UserPreviewProps) => {
   const { data, error, loading } = requestData as State;
 
   const { messageHandler } = useNotification();
-  const { profile } = user;
+  const { profile, flags } = user;
 
   const { survivorHandler, survivor } = useSurvivor();
 
@@ -37,7 +37,7 @@ export default ({ user }: UserPreviewProps) => {
 
   return profile && (
     <S.SurvivorCard
-      infected={0}
+      infected={flags && flags.length >= 1 ? 1 : 0}
       select={survivor?.id === user.id ? 1 : 0}
       onClick={fetchSelectedSurvivor}
     >
