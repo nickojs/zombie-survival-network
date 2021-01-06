@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import male from '../../assets/male.png';
-import female from '../../assets/female.png';
+import male from '../../../assets/male.png';
+import female from '../../../assets/female.png';
 
-import { Gender } from '../../contexts/authContext';
+import { Gender } from '../../../contexts/authContext';
 
 interface UserPreviewProps {
   infected: number;

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { NotificationTypes, useNotification } from '../../contexts/notificationContext';
-import useRequest, { Options, State } from '../../hooks/useRequest';
-import { UserProfile } from '../../models/user';
+import { NotificationTypes, useNotification } from '../../../contexts/notificationContext';
+import useRequest, { Options, State } from '../../../hooks/useRequest';
+import { UserProfile } from '../../../models/user';
 
 import * as S from './styles';
-import { Container, Title } from '../../generalStyles';
+import { Container, Title } from '../../../generalStyles';
 import SurvivorPreview from './survivor';
-import { useModules } from '../../contexts/modulesContext';
+import { useModules } from '../../../contexts/modulesContext';
 
 export interface CompactUser {
   id: string;

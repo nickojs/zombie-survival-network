@@ -3,8 +3,8 @@ import { below, middle, right } from '../constant';
 
 // available modules
 import Profile from '../components/profile';
-import SurvivorList from '../components/survivorList';
-import Survivor from '../components/survivorDetails';
+import SurvivorList from '../components/survivor/list';
+import Survivor from '../components/survivor/details';
 import Location from '../components/location';
 
 const Modules = [
