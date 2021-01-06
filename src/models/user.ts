@@ -5,11 +5,11 @@ interface Location {
   longitude: number;
 }
 
-export interface CompactUser {
-  id: string;
-  username?: string;
-  profile: UserProfile;
-  location: Location;
+interface Flag {
+  id: number;
+  user: User;
+  flaggedBy: User;
+  createdAt: Date;
 }
 
 export interface UserProfile {
@@ -20,10 +20,10 @@ export interface UserProfile {
 }
 
 export interface User {
-  userId: string;
-  iat: number;
-  email: string;
+  id: string;
   username: string;
-  profile: UserProfile | null;
-  location: Location;
+  email: string;
+  profile?: UserProfile;
+  location?: Location;
+  flags?: Flag;
 }

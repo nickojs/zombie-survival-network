@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { NotificationTypes, useNotification } from '../../contexts/notificationContext';
-import { useSurvivor } from '../../contexts/survivorContext';
+import { useSurvivor, Survivor } from '../../contexts/survivorContext';
 import useRequest, { Options, State } from '../../hooks/useRequest';
-import { CompactUser } from '../../models/user';
 import * as S from './styles';
+import { CompactUser } from '.';
 
 interface UserPreviewProps {
   user: CompactUser;
@@ -28,7 +28,7 @@ export default ({ user }: UserPreviewProps) => {
   };
 
   useEffect(() => {
-    if (data) survivorHandler(data as CompactUser);
+    if (data) survivorHandler(data as Survivor);
   }, [data]);
 
   useEffect(() => {

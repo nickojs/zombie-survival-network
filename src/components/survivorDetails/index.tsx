@@ -3,7 +3,9 @@ import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import { LatLng } from 'leaflet';
 import { useModules } from '../../contexts/modulesContext';
 import { useSurvivor } from '../../contexts/survivorContext';
-import { Block, Container, Title } from '../../generalStyles';
+import {
+  Block, Button, Container, Gradient, Title
+} from '../../generalStyles';
 
 export default () => {
   const [position, setPosition] = useState<LatLng | null>(null);
@@ -26,7 +28,7 @@ export default () => {
       <Title
         onClick={() => toggleModule('survivor')}
       >
-        {survivor?.profile.fullName.split(' ')[0] || survivor.username}
+        {survivor.profile.fullName.split(' ')[0] || survivor.username}
         &apos;s details
       </Title>
       <Block>
@@ -39,7 +41,15 @@ export default () => {
             <Marker position={position} />
           </MapContainer>
         )}
-        {!position && <p>This user hasn&apos;t set his location</p>}
+        {!position && <p>This survivor hasn&apos;t set his location</p>}
+      </Block>
+      <Block>
+        <Button
+          type="button"
+          gradient={Gradient.MAIN}
+        >
+          Flag survivor
+        </Button>
       </Block>
     </Container>
   );

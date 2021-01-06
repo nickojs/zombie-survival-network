@@ -1,9 +1,13 @@
 import React, { useContext, useState } from 'react';
-import { CompactUser } from '../models/user';
+import { User, UserProfile } from '../models/user';
+
+export interface Survivor extends User {
+  profile: UserProfile;
+}
 
 interface SurvivorContextProps {
-  survivor: CompactUser | null;
-  survivorHandler(survivor: CompactUser): void;
+  survivor: Survivor | null;
+  survivorHandler(survivor: Survivor): void;
 }
 
 export const SurvivorContext = React.createContext<SurvivorContextProps>(
@@ -11,9 +15,9 @@ export const SurvivorContext = React.createContext<SurvivorContextProps>(
 );
 
 export const SurvivorProvider: React.FC = ({ children }) => {
-  const [survivor, setSurvivor] = useState<CompactUser | null>(null);
+  const [survivor, setSurvivor] = useState<Survivor | null>(null);
 
-  const survivorHandler = (survivor: CompactUser) => setSurvivor(survivor);
+  const survivorHandler = (survivor: Survivor) => setSurvivor(survivor);
 
   return (
     <SurvivorContext.Provider
