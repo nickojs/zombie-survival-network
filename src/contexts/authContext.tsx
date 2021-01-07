@@ -32,7 +32,7 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const updateUser = async () => {
     setOptions({
-      method: 'POST',
+      method: 'GET',
       url: 'user/self'
     });
   };
