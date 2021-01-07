@@ -14,6 +14,7 @@ interface SurvivorContextProps {
   loading: boolean;
   survivorHandler(survivor: Survivor): void;
   updateSurvivorList(): void;
+  clearSurvivor(): void;
 }
 
 export const SurvivorContext = React.createContext<SurvivorContextProps>(
@@ -40,6 +41,8 @@ export const SurvivorProvider: React.FC = ({ children }) => {
 
   const survivorHandler = (survivor: Survivor) => setSurvivor(survivor);
 
+  const clearSurvivor = () => setSurvivor(null);
+
   useEffect(() => {
     if (token) updateSurvivorList();
   }, [token]);
@@ -64,7 +67,8 @@ export const SurvivorProvider: React.FC = ({ children }) => {
         survivorList,
         loading,
         survivorHandler,
-        updateSurvivorList
+        updateSurvivorList,
+        clearSurvivor
       }}
     >
       {children}
