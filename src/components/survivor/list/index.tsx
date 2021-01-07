@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 import { Container, Title } from '../../../generalStyles';
-import { useModules } from '../../../contexts/modulesContext';
 import { Survivor, useSurvivor } from '../../../contexts/survivorContext';
-
+import Minimize from '../../../components/controls';
 import SurvivorPreview from './survivor';
 
 import * as S from './styles';
@@ -11,7 +10,6 @@ import * as S from './styles';
 export default () => {
   const [localSurvivors, setLocalSurvivors] = useState<Survivor[]>();
   const { survivorList } = useSurvivor();
-  const { toggleModule } = useModules();
 
   useEffect(() => {
     setLocalSurvivors(survivorList);
@@ -19,11 +17,8 @@ export default () => {
 
   return (
     <Container>
-      <Title
-        onClick={() => toggleModule('survivorList')}
-      >
-        Survivors
-      </Title>
+      <Minimize moduleName="survivorList" />
+      <Title>Survivors</Title>
       <p>Displays only active, full profile users</p>
 
       <S.ListContainer>

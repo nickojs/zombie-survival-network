@@ -13,15 +13,14 @@ interface UserPreviewProps {
 export default ({ user }: UserPreviewProps) => {
   const [options, setOptions] = useState<Options>(null);
   const [requestData] = useRequest(options);
-  const { data, error, loading } = requestData as State;
+  const { data, error } = requestData as State;
 
   const { messageHandler } = useNotification();
   const { profile, flags } = user;
 
   const { survivorHandler, survivor } = useSurvivor();
 
-  const fetchSelectedSurvivor = () => {
-    if (survivor?.id === user.id) return;
+  const fetchSurvivor = () => {
     setOptions({
       method: 'GET',
       url: `/user/${user.id}`
@@ -40,7 +39,7 @@ export default ({ user }: UserPreviewProps) => {
     <S.SurvivorCard
       infected={flags && flags.length >= 1 ? 1 : 0}
       select={survivor?.id === user.id ? 1 : 0}
-      onClick={fetchSelectedSurvivor}
+      onClick={fetchSurvivor}
     >
       <S.SubCard>
         <p>{profile.fullName}</p>

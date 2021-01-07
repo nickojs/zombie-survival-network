@@ -4,10 +4,10 @@ import { LatLng } from 'leaflet';
 
 import useRequest, { Options, State } from '../../../hooks/useRequest';
 import { NotificationTypes, useNotification } from '../../../contexts/notificationContext';
-import { useModules } from '../../../contexts/modulesContext';
 import { useSurvivor } from '../../../contexts/survivorContext';
 import { useAuth } from '../../../contexts/authContext';
 import { formatPlural } from '../../../helpers/formatFlags';
+import Minimize from '../../controls';
 
 import {
   Block, Button, Container, Gradient, Title
@@ -21,10 +21,9 @@ export default () => {
 
   const [flagged, setFlagged] = useState<boolean>(false);
 
-  const { toggleModule } = useModules();
   const { messageHandler } = useNotification();
   const { user } = useAuth();
-  const { survivor, updateSurvivorList } = useSurvivor();
+  const { survivor, updateSurvivorList, clearSurvivor } = useSurvivor();
   const { location } = survivor || {};
 
   const flagSurvivorHandler = () => setOptions({
@@ -71,9 +70,8 @@ export default () => {
 
   return survivor && (
     <Container>
-      <Title
-        onClick={() => toggleModule('survivor')}
-      >
+      <Minimize moduleName="survivor" close={clearSurvivor} />
+      <Title>
         {survivor.profile.fullName.split(' ')[0] || survivor.username}
         &apos;s details
       </Title>
