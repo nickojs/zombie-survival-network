@@ -40,7 +40,7 @@ export const SurvivorCard = styled.div<UserPreviewProps>`
 
   :hover{ background-color: rgba(255, 255, 255, 0.6); }
 
-  ${({ select }) => select && 'background-color: rgba(0, 255, 255, 0.6)'}
+  ${({ select }) => select && 'background-color: rgba(255, 255, 255, 0.8)'}
 `;
 
 export const SubCard = styled.div`
