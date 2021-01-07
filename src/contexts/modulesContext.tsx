@@ -2,61 +2,9 @@ import React, {
   FunctionComponent, useContext, useState, useEffect
 } from 'react';
 import useRequest, { Options, State } from '../hooks/useRequest';
-import { below, middle, right } from '../constant';
-
-// available modules
-import Profile from '../components/profile';
-import SurvivorList from '../components/survivor/list';
-import Survivor from '../components/survivor/details';
-import Location from '../components/location';
 import { NotificationTypes, useNotification } from './notificationContext';
-
-const Modules = [
-  {
-    id: 'profile',
-    name: 'Profile',
-    Component: Profile,
-    display: false,
-    isDockable: false,
-    screenPos: {
-      x: right,
-      y: 0
-    }
-  },
-  {
-    id: 'survivorList',
-    name: 'Survivors',
-    Component: SurvivorList,
-    display: true,
-    isDockable: true,
-    screenPos: {
-      x: 0,
-      y: 0
-    }
-  },
-  {
-    id: 'survivor',
-    name: 'Details',
-    Component: Survivor,
-    display: true,
-    isDockable: true,
-    screenPos: {
-      x: middle,
-      y: 0
-    }
-  },
-  {
-    id: 'location',
-    name: 'Location',
-    Component: Location,
-    display: false,
-    isDockable: false,
-    screenPos: {
-      x: right,
-      y: below
-    }
-  }
-];
+import { Modules } from '../constant';
+import { useAuth } from './authContext';
 
 export interface Module {
   id: string;
@@ -86,13 +34,14 @@ export const ModulesContext = React.createContext<ModulesContextProps>(
 );
 
 export const ModulesProvider: React.FC = ({ children }) => {
-  const [modules, setModules] = useState<Module[]>([...Modules]);
+  const [modules, setModules] = useState<Module[]>(Modules);
 
   const [options, setOptions] = useState<Options>(null);
   const [requestData] = useRequest(options);
   const { data, error, loading } = requestData as State;
 
   const { messageHandler } = useNotification();
+  const { user } = useAuth();
 
   const replaceModule = (moduleId: string): [Module | undefined, Module[], number] => {
     const copyState = [...modules];
@@ -103,12 +52,12 @@ export const ModulesProvider: React.FC = ({ children }) => {
   };
 
   const toggleModule = (moduleId: string) => {
-    const [module, modules, moduleIndex] = replaceModule(moduleId);
+    const [module, copyModules, moduleIndex] = replaceModule(moduleId);
 
     if (module) {
       module.display = !module.display;
-      modules.splice(moduleIndex, 1, module);
-      setModules(modules);
+      copyModules.splice(moduleIndex, 1, module);
+      setModules(copyModules);
     }
   };
 
@@ -119,18 +68,13 @@ export const ModulesProvider: React.FC = ({ children }) => {
   };
 
   const updatePosition = (moduleId: string, position: Position) => {
-    const [module, modules, moduleIndex] = replaceModule(moduleId);
+    const [module, copyModules, moduleIndex] = replaceModule(moduleId);
 
     if (module) {
       module.screenPos = position;
-      modules.splice(moduleIndex, 1, module);
-      setModules(modules);
+      copyModules.splice(moduleIndex, 1, module);
+      setModules(copyModules);
     }
-  };
-
-  const saveModulesPos = () => {
-    const copyState = [...modules];
-    localStorage.setItem('modules', JSON.stringify(copyState));
   };
 
   const uploadModulesPos = () => setOptions({
@@ -140,20 +84,33 @@ export const ModulesProvider: React.FC = ({ children }) => {
   });
 
   useEffect(() => {
-    // get existing screnPos from localStorage
-  }, []);
-
-  useEffect(() => {
-    saveModulesPos();
-  }, [modules]);
-
-  useEffect(() => {
     if (error) { messageHandler(error, NotificationTypes.ERROR); }
   }, [error]);
 
   useEffect(() => {
     if (data) { messageHandler(data.message, NotificationTypes.SUCCESS); }
   }, [data]);
+
+  useEffect(() => {
+    if (user) {
+      const { containers } = user;
+      if (containers) {
+        const { position } = containers;
+        const parsePos: Module[] = JSON.parse(position);
+        const copyState = [...modules];
+
+        for (let i = 0; i < copyState.length; i++) {
+          const currentMod = copyState[i];
+          const mod = parsePos.find((pos) => pos.id === currentMod.id);
+          const modIndex = parsePos.findIndex((pos) => pos.id === currentMod.id);
+          const mergeMod = { ...currentMod, ...mod };
+
+          if (modIndex > -1) copyState.splice(modIndex, 1, mergeMod);
+        }
+        setModules(copyState);
+      }
+    }
+  }, [user]);
 
   return (
     <ModulesContext.Provider
