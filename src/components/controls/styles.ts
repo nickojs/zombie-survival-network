@@ -1,18 +1,24 @@
 import styled from 'styled-components';
 
-export const Minimize = styled.button`
+export const Container = styled.div`
   position: absolute;
   top: -5px; left: -5px;
-  
   z-index: 99;
-  width: 75px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+`;
+
+export const Minimize = styled.button`
+  width: 50px;
 
   cursor: pointer;
   border: 1px outset white;
 
   color: lime;
   background-color: black;
-  transition: .5s ease-in;
+  transition: .2s;
 
   :hover { 
     color: black;
