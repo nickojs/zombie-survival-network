@@ -1,6 +1,7 @@
 import React, {
   FunctionComponent, useContext, useState, useEffect
 } from 'react';
+import useRequest, { Options, State } from '../hooks/useRequest';
 import { below, middle, right } from '../constant';
 
 // available modules
@@ -8,6 +9,7 @@ import Profile from '../components/profile';
 import SurvivorList from '../components/survivor/list';
 import Survivor from '../components/survivor/details';
 import Location from '../components/location';
+import { NotificationTypes, useNotification } from './notificationContext';
 
 const Modules = [
   {
@@ -67,9 +69,11 @@ export interface Module {
 
 interface ModulesContextProps {
   modules: Module[];
+  loading: boolean;
   toggleModule(moduleId: string): void;
   isSelected(moduleId: string): boolean;
   updatePosition(moduleId: string, position: Position): void;
+  uploadModulesPos(): void;
 }
 
 export interface Position {
@@ -82,7 +86,13 @@ export const ModulesContext = React.createContext<ModulesContextProps>(
 );
 
 export const ModulesProvider: React.FC = ({ children }) => {
-  const [modules, setModules] = useState<Module[]>([...Modules]); // setting default modules for now
+  const [modules, setModules] = useState<Module[]>([...Modules]);
+
+  const [options, setOptions] = useState<Options>(null);
+  const [requestData] = useRequest(options);
+  const { data, error, loading } = requestData as State;
+
+  const { messageHandler } = useNotification();
 
   const replaceModule = (moduleId: string): [Module | undefined, Module[], number] => {
     const copyState = [...modules];
@@ -123,6 +133,12 @@ export const ModulesProvider: React.FC = ({ children }) => {
     localStorage.setItem('modules', JSON.stringify(copyState));
   };
 
+  const uploadModulesPos = () => setOptions({
+    method: 'PUT',
+    url: 'user/containers',
+    data: { position: JSON.stringify(modules) }
+  });
+
   useEffect(() => {
     // get existing screnPos from localStorage
   }, []);
@@ -131,13 +147,23 @@ export const ModulesProvider: React.FC = ({ children }) => {
     saveModulesPos();
   }, [modules]);
 
+  useEffect(() => {
+    if (error) { messageHandler(error, NotificationTypes.ERROR); }
+  }, [error]);
+
+  useEffect(() => {
+    if (data) { messageHandler(data.message, NotificationTypes.SUCCESS); }
+  }, [data]);
+
   return (
     <ModulesContext.Provider
       value={{
         modules,
+        loading,
         toggleModule,
         isSelected,
-        updatePosition
+        updatePosition,
+        uploadModulesPos
       }}
     >
       {children}
