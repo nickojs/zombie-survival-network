@@ -1,5 +1,10 @@
 import { Gender } from '../contexts/authContext';
 
+interface Containers {
+  id: number;
+  position: string;
+}
+
 interface Location {
   latitude: number;
   longitude: number;
@@ -26,4 +31,5 @@ export interface User {
   profile?: UserProfile;
   location?: Location;
   flags?: Flag[];
+  containers?: Containers;
 }
