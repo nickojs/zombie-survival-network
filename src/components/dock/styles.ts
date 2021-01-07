@@ -24,7 +24,7 @@ export const ToggleButton = styled(Title)`
   position: absolute;
   left: 50%; top: -25%;
   transform: translate(-50%, -50%) skew(-25deg);
-  
+  z-index: 100;
   margin: 0; padding: 0;
   width: 15%;
   
