@@ -47,7 +47,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   const signOut = () => {
     setToken('');
     setUser(null);
-    localStorage.removeItem('auth_token');
+    localStorage.clear();
   };
 
   useEffect(() => {
