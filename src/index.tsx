@@ -10,15 +10,15 @@ import { ModulesProvider } from './contexts/modulesContext';
 
 ReactDOM.render(
   <React.StrictMode>
-    <ModulesProvider>
-      <NotificationProvider>
+    <NotificationProvider>
+      <ModulesProvider>
         <AuthProvider>
           <SurvivorProvider>
             <App />
           </SurvivorProvider>
         </AuthProvider>
-      </NotificationProvider>
-    </ModulesProvider>
+      </ModulesProvider>
+    </NotificationProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
