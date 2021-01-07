@@ -11,13 +11,13 @@ import { ModulesProvider } from './contexts/modulesContext';
 ReactDOM.render(
   <React.StrictMode>
     <NotificationProvider>
-      <ModulesProvider>
-        <AuthProvider>
+      <AuthProvider>
+        <ModulesProvider>
           <SurvivorProvider>
             <App />
           </SurvivorProvider>
-        </AuthProvider>
-      </ModulesProvider>
+        </ModulesProvider>
+      </AuthProvider>
     </NotificationProvider>
   </React.StrictMode>,
   document.getElementById('root')
