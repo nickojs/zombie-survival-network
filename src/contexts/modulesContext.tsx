@@ -91,6 +91,8 @@ export const ModulesProvider: React.FC = ({ children }) => {
     if (data) { messageHandler(data.message, NotificationTypes.SUCCESS); }
   }, [data]);
 
+  // this effect relies on 'user', but should only run on mount
+  // adding 'user' to the deps make the Modules be re-written to the user's previous saved position
   useEffect(() => {
     if (user) {
       const { containers } = user;
@@ -110,7 +112,7 @@ export const ModulesProvider: React.FC = ({ children }) => {
         setModules(copyState);
       }
     }
-  }, [user]);
+  }, []);
 
   return (
     <ModulesContext.Provider
