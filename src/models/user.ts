@@ -1,5 +1,11 @@
 import { Gender } from '../contexts/authContext';
 
+interface Item {
+  id: number;
+  OSRSId: string;
+  qtd: number;
+}
+
 interface Containers {
   id: number;
   position: string;
@@ -32,4 +38,5 @@ export interface User {
   location?: Location;
   flags?: Flag[];
   containers?: Containers;
+  items?: Item[];
 }

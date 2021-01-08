@@ -3,6 +3,7 @@ import { CgProfile } from 'react-icons/cg';
 import { ImExit } from 'react-icons/im';
 import { MdGpsFixed } from 'react-icons/md';
 import { AiOutlineSave } from 'react-icons/ai';
+import { GiLightBackpack } from 'react-icons/gi';
 
 import { useAuth } from '../../contexts/authContext';
 import { useModules } from '../../contexts/modulesContext';
@@ -40,6 +41,13 @@ export default () => {
           title="Save containers current position"
         >
           <AiOutlineSave />
+        </S.IconButton>
+        <S.IconButton
+          selected={isSelected('inventory') ? 1 : 0}
+          onClick={() => toggleModule('inventory')}
+          title="Inventory"
+        >
+          <GiLightBackpack />
         </S.IconButton>
         <S.IconButton
           onClick={signOut}

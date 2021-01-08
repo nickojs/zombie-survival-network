@@ -2,6 +2,7 @@ import Profile from '../components/profile';
 import SurvivorList from '../components/survivor/list';
 import Survivor from '../components/survivor/details';
 import Location from '../components/location';
+import Inventory from '../components/inventory';
 
 const CONTAINER_WIDTH = 400;
 const CONTAINER_HEIGHT = 500;
@@ -55,6 +56,17 @@ export const Modules = [
     screenPos: {
       x: right,
       y: below
+    }
+  },
+  {
+    id: 'inventory',
+    name: 'Inventory',
+    Component: Inventory,
+    display: false,
+    isDockable: false,
+    screenPos: {
+      x: right,
+      y: 0
     }
   }
 ];
