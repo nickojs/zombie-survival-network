@@ -38,6 +38,7 @@ export default () => {
                 bounds=".limiter"
                 // @ts-ignore - ignoring 'default' because it is badly typed
                 default={screenPos || undefined}
+                enableResizing={false}
                 onDragStop={(e, data) => {
                   updatePosition(id, { x: data.x, y: data.y });
                 }}
