@@ -33,7 +33,7 @@ export const InventoryMenuItem = styled.div`
   padding: 4px; 
   
   font-size: 24px;
-  background: white;
+  color: #2e2c25;
   border-radius: 8px;
 
   cursor: pointer;

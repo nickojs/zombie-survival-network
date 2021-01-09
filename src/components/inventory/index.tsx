@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { GiBroadDagger } from 'react-icons/gi';
+import { MdLocationSearching } from 'react-icons/md';
+import { BiHelpCircle } from 'react-icons/bi';
 
 import { useAuth } from '../../contexts/authContext';
 import { NotificationTypes, useNotification } from '../../contexts/notificationContext';
@@ -77,7 +78,16 @@ export default () => {
           title="Fetch and add items to the inventory"
           onClick={() => setSearchMode(!searchMode)}
         >
-          <GiBroadDagger />
+          <MdLocationSearching />
+        </S.InventoryMenuItem>
+
+        <S.InventoryMenuItem />
+        <S.InventoryMenuItem />
+
+        <S.InventoryMenuItem
+          title="A small token of my appreciation to OSRS"
+        >
+          <BiHelpCircle />
         </S.InventoryMenuItem>
       </S.InventoryMenu>
 
