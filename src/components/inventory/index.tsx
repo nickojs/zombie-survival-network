@@ -4,36 +4,21 @@ import { GiBroadDagger } from 'react-icons/gi';
 
 import { useAuth } from '../../contexts/authContext';
 import { NotificationTypes, useNotification } from '../../contexts/notificationContext';
+import InventoryItems from './inventoryItems';
 
 import * as S from './styles';
 
-interface OSRSItem {
+export interface OSRSItem {
   _id: string;
   name: string;
   icon: string;
 }
 
-const InventoryItems: React.FC<{ items: OSRSItem[], search: boolean }> = ({ items, search }) => {
-  const itemClickHandler = () => {
-    if (search) {
-      console.log('im a search item!');
-    }
-  };
+// services
+const fetchOSRSItem = (itemId: string) => axios.get(`https://api.osrsbox.com/items?where={ "_id": "${itemId}", "duplicate": false }`);
 
-  return (
-    <S.ItemWrapper>
-      {items.map((item) => (
-        <S.Item key={item._id} onClick={itemClickHandler}>
-          <S.ItemImage
-            alt={item.name}
-            title={item.name}
-            src={`data:image/png;base64,${item.icon}`}
-          />
-        </S.Item>
-      ))}
-    </S.ItemWrapper>
-  );
-};
+const fetchOSRSItems = (name: string) => axios
+  .get(`https://api.osrsbox.com/items?where={ "$text" :{ "$search": "${name}" }, "duplicate": false }`);
 
 export default () => {
   const [inventory, setInventory] = useState<OSRSItem[]>([]);
@@ -47,32 +32,31 @@ export default () => {
   const { user } = useAuth();
   const { items } = user || { };
 
-  const fetchOSRSItem = (itemId: string) => axios
-    .get(`https://api.osrsbox.com/items?where={ "_id": "${itemId}", "duplicate": false }`);
-
-  const fetchOSRSItems = (name: string) => axios
-    .get(`https://api.osrsbox.com/items?where={ "$text" :{ "$search": "${name}" }, "duplicate": false }`);
-
   useEffect(() => {
     if (items) {
+      setInventory([]);
       setLoading(true);
-      const getArray = items.map((item) => fetchOSRSItem(item.OSRSId));
 
-      Promise.all(getArray)
+      const getRequests = items.map((item) => fetchOSRSItem(item.OSRSId));
+      Promise.all(getRequests)
         .then((res) => {
-          res.forEach((each) => {
-            const { _items }: { _items: OSRSItem[] } = each.data;
-            setInventory((pState) => [...pState, _items[0]]);
+          res.forEach((response) => {
+            const { data } = response;
+            const { _items } = data;
+            const uniqueItem = _items[0];
+            setInventory((pState) => [...pState, uniqueItem]);
           });
-        })
-        .catch(() => {
-          messageHandler('Failed to fecth inventory', NotificationTypes.ERROR);
-        })
-        .finally(() => { setLoading(false); });
+        }).catch(() => {
+          messageHandler('Failed to fecth inventory data', NotificationTypes.ERROR);
+        }).finally(() => {
+          setLoading(false);
+        });
     }
   }, [items]);
 
   useEffect(() => {
+    if (!search) return;
+
     setLoading(true);
     const timer = setTimeout(async () => {
       const request = await fetchOSRSItems(search);
@@ -105,7 +89,7 @@ export default () => {
         />
       )}
 
-      {loading
+      {loading && searchResult.length === 0
         ? <p>Loading items...</p>
         : <InventoryItems items={searchMode ? searchResult : inventory} search={searchMode} />}
 

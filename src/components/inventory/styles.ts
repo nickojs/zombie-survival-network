@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import inventoryBg from '../../assets/inventory.png';
 
 export const InventoryContainer = styled.div`
@@ -42,6 +42,7 @@ export const InventoryMenuItem = styled.div`
 export const SearchBar = styled.input`
   width: 100%; 
   height: 32px;
+  margin-bottom: 12px;
   
   text-align: center;
   
@@ -50,10 +51,22 @@ export const SearchBar = styled.input`
   color: white;
 `;
 
-export const ItemWrapper = styled.div`
+interface ItemWrapperProps {
+  disabled: number;
+}
+
+const disabledDiv = css`
+  pointer-events: none;
+  cursor: not-allowed;
+  filter: grayscale(100%);
+`;
+
+export const ItemWrapper = styled.div<ItemWrapperProps>`
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-start;
+  ${({ disabled }) => disabled && disabledDiv}
+
 `;
 
 export const Item = styled.div`
