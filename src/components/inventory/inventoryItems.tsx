@@ -4,6 +4,7 @@ import { OSRSItem } from '.';
 import { useAuth } from '../../contexts/authContext';
 import { NotificationTypes, useNotification } from '../../contexts/notificationContext';
 import useRequest, { Options, State } from '../../hooks/useRequest';
+import Item from './item';
 
 import * as S from './styles';
 
@@ -20,7 +21,7 @@ export default ({ items, search }: InventoryItemsProps) => {
   const { messageHandler } = useNotification();
   const { updateUser } = useAuth();
 
-  const itemClickHandler = (item: OSRSItem) => {
+  const searchItemFetchHandler = (item: OSRSItem) => {
     if (search) {
       setOptions({
         method: 'POST',
@@ -31,6 +32,13 @@ export default ({ items, search }: InventoryItemsProps) => {
         }
       });
     }
+  };
+
+  const deleteInventoryItemHandler = (item: OSRSItem) => {
+    setOptions({
+      method: 'DELETE',
+      url: `/inventory/${item._id}`
+    });
   };
 
   useEffect(() => {
@@ -47,13 +55,13 @@ export default ({ items, search }: InventoryItemsProps) => {
   return (
     <S.ItemWrapper disabled={loading ? 1 : 0}>
       {items.map((item) => (
-        <S.Item key={item._id} onClick={() => itemClickHandler(item)}>
-          <S.ItemImage
-            alt={item.name}
-            title={item.name}
-            src={`data:image/png;base64,${item.icon}`}
-          />
-        </S.Item>
+        <Item
+          key={item._id}
+          item={item}
+          search={search}
+          searchClick={searchItemFetchHandler}
+          deleteClick={deleteInventoryItemHandler}
+        />
       ))}
     </S.ItemWrapper>
   );
