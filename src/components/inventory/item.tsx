@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { OSRSItem } from '.';
+import { useTrade } from '../../contexts/tradeContext';
 import * as S from './styles';
 
 interface ItemProps {
@@ -7,13 +8,15 @@ interface ItemProps {
   search: boolean;
   searchClick: (item: OSRSItem) => void;
   deleteClick: (item: OSRSItem) => void;
+  tradeItemClick: (item: OSRSItem) => void;
 }
 
 export default ({
-  item, search, searchClick, deleteClick
+  item, search, searchClick, deleteClick, tradeItemClick
 }: ItemProps) => {
   const [show, setShow] = useState<boolean>(false);
   const [triggerDelete, setTriggerDelete] = useState<boolean>(false);
+  const { trading } = useTrade();
 
   const deleteItemHandler = () => {
     if (triggerDelete) deleteClick(item);
@@ -36,7 +39,7 @@ export default ({
     <S.Item
       onMouseEnter={showDeleItemHandler}
       onMouseLeave={showDeleItemHandler}
-      onClick={() => searchClick(item)}
+      onClick={trading ? () => tradeItemClick(item) : () => searchClick(item)}
     >
       <S.ItemImage
         alt={item.name}

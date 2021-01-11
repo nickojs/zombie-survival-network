@@ -16,6 +16,8 @@ export const TradeGrid = styled.div`
   border: 4px outset #534f3e;
   box-shadow: 1px 1px 10px black;
 
+  color: #ff981f;
+
   div { 
     padding: 6px; 
     text-align: center;
@@ -39,6 +41,10 @@ const Container = styled.div`
 
 export const TradeTitle = styled(Container)`
   grid-area: trade-title;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export const YourTrade = styled(Container)`
@@ -81,7 +87,6 @@ export const Button = styled.button<ButtonProps>`
 `;
 
 export const Text = styled.p`
-  color: #ff981f;
   text-shadow: 2px 2px black;
 `;
 
@@ -89,6 +94,5 @@ export const Title = styled.h1`
   font-size: 1.4em;
   font-weight: bold;
   
-  color: #ff981f;
   text-shadow: 2px 2px black;  
 `;

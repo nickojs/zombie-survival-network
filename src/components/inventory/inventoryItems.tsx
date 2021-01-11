@@ -38,6 +38,10 @@ export default ({ items, search }: InventoryItemsProps) => {
     });
   };
 
+  const tradeItemHandler = (item: OSRSItem) => {
+    console.log(item);
+  };
+
   useEffect(() => {
     if (data) {
       messageHandler(data.message, NotificationTypes.SUCCESS);
@@ -58,6 +62,7 @@ export default ({ items, search }: InventoryItemsProps) => {
           search={search}
           searchClick={searchItemFetchHandler}
           deleteClick={deleteInventoryItemHandler}
+          tradeItemClick={tradeItemHandler}
         />
       ))}
     </S.ItemWrapper>

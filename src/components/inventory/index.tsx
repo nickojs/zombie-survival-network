@@ -7,6 +7,7 @@ import { NotificationTypes, useNotification } from '../../contexts/notificationC
 import InventoryItems from './inventoryItems';
 
 import * as S from './styles';
+import { useTrade } from '../../contexts/tradeContext';
 
 export interface OSRSItem {
   _id: string;
@@ -29,6 +30,7 @@ export default () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const { messageHandler } = useNotification();
+  const { trading } = useTrade();
   const { user } = useAuth();
   const { items } = user || { };
 
@@ -72,24 +74,25 @@ export default () => {
 
   return (
     <S.InventoryContainer>
+      {!trading && (
+        <S.InventoryMenu>
+          <S.InventoryMenuItem
+            title="Fetch and add items to the inventory"
+            onClick={() => setSearchMode(!searchMode)}
+          >
+            {searchMode ? <BiArrowBack /> : <BiSearchAlt />}
+          </S.InventoryMenuItem>
 
-      <S.InventoryMenu>
-        <S.InventoryMenuItem
-          title="Fetch and add items to the inventory"
-          onClick={() => setSearchMode(!searchMode)}
-        >
-          {searchMode ? <BiArrowBack /> : <BiSearchAlt />}
-        </S.InventoryMenuItem>
+          <S.InventoryMenuItem />
+          <S.InventoryMenuItem />
 
-        <S.InventoryMenuItem />
-        <S.InventoryMenuItem />
-
-        <S.InventoryMenuItem
-          title="A small token of my appreciation to OSRS"
-        >
-          <BiHelpCircle />
-        </S.InventoryMenuItem>
-      </S.InventoryMenu>
+          <S.InventoryMenuItem
+            title="A small token of my appreciation to OSRS"
+          >
+            <BiHelpCircle />
+          </S.InventoryMenuItem>
+        </S.InventoryMenu>
+      )}
 
       {searchMode && (
         <S.SearchBar
