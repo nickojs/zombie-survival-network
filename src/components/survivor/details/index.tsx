@@ -12,6 +12,7 @@ import Minimize from '../../controls';
 import {
   Block, Button, Container, Gradient, Title
 } from '../../../generalStyles';
+import { useModules } from '../../../contexts/modulesContext';
 
 export default () => {
   const [position, setPosition] = useState<LatLng | null>(null);
@@ -22,6 +23,7 @@ export default () => {
   const [flagged, setFlagged] = useState<boolean>(false);
 
   const { messageHandler } = useNotification();
+  const { toggleModule } = useModules();
   const { user } = useAuth();
   const { survivor, updateSurvivorList, clearSurvivor } = useSurvivor();
   const { location } = survivor || {};
@@ -86,6 +88,15 @@ export default () => {
           </MapContainer>
         )}
         {!position && <p>This survivor hasn&apos;t set his location</p>}
+      </Block>
+      <Block>
+        <Button
+          type="button"
+          gradient={Gradient.SECONDARY}
+          onClick={() => toggleModule('trade')}
+        >
+          Trade items
+        </Button>
       </Block>
       <Block>
         {survivor.flags && (
