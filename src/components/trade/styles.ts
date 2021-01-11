@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import tradeBg from '../../assets/trade.png';
 
 export const TradeGrid = styled.div`
   display: grid;
@@ -13,29 +12,83 @@ export const TradeGrid = styled.div`
   
   height: 395px;
   width: 630px;
+  
+  border: 4px outset #534f3e;
+  box-shadow: 1px 1px 10px black;
 
-  background-image: url(${tradeBg});
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
+  div { 
+    padding: 6px; 
+    text-align: center;
+  }
 
-  div { padding: 6px; }
+  * {
+    font-size: 12px;
+    font-family: 'Press Start 2P', cursive;
+  }
+
 `;
 
-export const TradeTitle = styled.div`
-  grid-area: trade-title;
-`;
-
-export const YourTrade = styled.div`
-  grid-area: your-trade;
-`;
-
-export const InnerContainer = styled.div`
+const Container = styled.div`
   background: #493f35;
   height: 100%;
   width: 100%;
+  
+  border: 4px inset #5d5647;
+  box-shadow: inset 0 0 10px black;
 `;
 
-export const SurvivorTrade = styled.div`
+export const TradeTitle = styled(Container)`
+  grid-area: trade-title;
+`;
+
+export const YourTrade = styled(Container)`
+  grid-area: your-trade;
+`;
+
+export const SurvivorTrade = styled(Container)`
   grid-area: survivor-trade;
+`;
+
+export const ButtonContainer = styled.div`
+  position: absolute;
+  top: 40%; left: 50%;
+  transform: translate(-50%, 0%);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  height: 160px;
+`;
+
+interface ButtonProps {
+  color: 'red' | 'lime'
+}
+
+export const Button = styled.button<ButtonProps>`
+  width: 115px;
+  height: 60px;
+  padding: 8px;
+
+  text-align: center;
+  border: 8px double #534f3e;
+  
+  cursor: pointer;
+
+  color: ${({ color }) => color};
+  background: black;
+`;
+
+export const Text = styled.p`
+  color: #ff981f;
+  text-shadow: 2px 2px black;
+`;
+
+export const Title = styled.h1`
+  font-size: 1.4em;
+  font-weight: bold;
+  
+  color: #ff981f;
+  text-shadow: 2px 2px black;  
 `;
