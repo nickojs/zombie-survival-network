@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { MdLocationSearching } from 'react-icons/md';
-import { BiHelpCircle } from 'react-icons/bi';
+import { BiHelpCircle, BiSearchAlt, BiArrowBack } from 'react-icons/bi';
 
 import { useAuth } from '../../contexts/authContext';
 import { NotificationTypes, useNotification } from '../../contexts/notificationContext';
@@ -45,6 +44,7 @@ export default () => {
             const { data } = response;
             const { _items } = data;
             const uniqueItem = _items[0];
+            if (uniqueItem === undefined) return;
             setInventory((pState) => [...pState, uniqueItem]);
           });
         }).catch(() => {
@@ -78,7 +78,7 @@ export default () => {
           title="Fetch and add items to the inventory"
           onClick={() => setSearchMode(!searchMode)}
         >
-          <MdLocationSearching />
+          {searchMode ? <BiArrowBack /> : <BiSearchAlt />}
         </S.InventoryMenuItem>
 
         <S.InventoryMenuItem />

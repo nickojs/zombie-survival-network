@@ -26,10 +26,7 @@ export default ({ items, search }: InventoryItemsProps) => {
       setOptions({
         method: 'POST',
         url: '/inventory/',
-        data: {
-          OSRSId: item._id,
-          qtd: 1
-        }
+        data: { OSRSId: item._id }
       });
     }
   };
