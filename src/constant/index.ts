@@ -3,6 +3,7 @@ import SurvivorList from '../components/survivor/list';
 import Survivor from '../components/survivor/details';
 import Location from '../components/location';
 import Inventory from '../components/inventory';
+import Trade from '../components/trade';
 
 const CONTAINER_WIDTH = 400;
 const CONTAINER_HEIGHT = 500;
@@ -66,6 +67,17 @@ export const Modules = [
     isDockable: false,
     screenPos: {
       x: right,
+      y: 0
+    }
+  },
+  {
+    id: 'trade',
+    name: 'Trade',
+    Component: Trade,
+    display: false,
+    isDockable: false,
+    screenPos: {
+      x: middle,
       y: 0
     }
   }
