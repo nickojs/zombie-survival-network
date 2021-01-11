@@ -15,7 +15,7 @@ interface TradeContextProps {
   toggleTrading(value?: boolean): void;
 
   items: OSRSItem[];
-  toggleItem(itemId: string): void;
+  toggleItem(itemId: OSRSItem): void;
 }
 
 export const TradeContext = React.createContext<TradeContextProps>(
@@ -26,13 +26,25 @@ export const TradeProvider: React.FC = ({ children }) => {
   const [trading, setTrading] = useState<boolean>(false);
   const [items, setItems] = useState<OSRSItem[]>([]);
 
-  const toggleItem = (itemId: string) => {
-    // look for exisitng item to toggle
+  const toggleItem = (item: OSRSItem) => {
+    const findItemIndex = items.findIndex((i) => i._id === item._id);
+
+    if (findItemIndex !== -1) {
+      const copyState = [...items];
+      copyState.splice(findItemIndex, 1);
+      return setItems(copyState);
+    }
+
+    setItems((pState) => [...pState, item]);
   };
 
   const toggleTrading = (value: boolean) => {
     setTrading(value);
   };
+
+  useEffect(() => {
+    console.log(items);
+  }, [items]);
 
   return (
     <TradeContext.Provider value={{

@@ -61,6 +61,10 @@ const disabledDiv = css`
   filter: grayscale(100%);
 `;
 
+const tradingItem = css`
+  filter: drop-shadow(5px 5px 8px white);
+`;
+
 export const ItemWrapper = styled.div<ItemWrapperProps>`
   display: flex;
   flex-flow: row wrap;
@@ -71,7 +75,11 @@ export const ItemWrapper = styled.div<ItemWrapperProps>`
   ${({ disabled }) => disabled && disabledDiv}
 `;
 
-export const Item = styled.div`
+interface ItemProps {
+  itemIsOnTrade: number;
+}
+
+export const Item = styled.div<ItemProps>`
   position: relative;
   display: flex;
   justify-content: center;
@@ -80,7 +88,11 @@ export const Item = styled.div`
   height: 50px;
   cursor: pointer;
 
-  :hover img{ filter: drop-shadow(5px 5px 8px gold); }
+  transition: .2s ease;
+
+  :hover img{ ${({ itemIsOnTrade }) => !itemIsOnTrade && 'filter: drop-shadow(5px 5px 8px gold);'} }
+
+  ${({ itemIsOnTrade }) => itemIsOnTrade && tradingItem}
 `;
 
 export const ItemImage = styled.img`

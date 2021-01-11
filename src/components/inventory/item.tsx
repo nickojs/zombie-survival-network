@@ -16,7 +16,9 @@ export default ({
 }: ItemProps) => {
   const [show, setShow] = useState<boolean>(false);
   const [triggerDelete, setTriggerDelete] = useState<boolean>(false);
-  const { trading } = useTrade();
+  const [itemTrading, setItemTrading] = useState<boolean>(false);
+
+  const { trading, items } = useTrade();
 
   const deleteItemHandler = () => {
     if (triggerDelete) deleteClick(item);
@@ -35,10 +37,16 @@ export default ({
     return () => { clearTimeout(timer); };
   }, [triggerDelete]);
 
+  useEffect(() => {
+    const findItem = items.find((i) => i._id === item._id);
+    setItemTrading(!!findItem);
+  }, [items]);
+
   return (
     <S.Item
       onMouseEnter={showDeleItemHandler}
       onMouseLeave={showDeleItemHandler}
+      itemIsOnTrade={itemTrading ? 1 : 0}
       onClick={trading ? () => tradeItemClick(item) : () => searchClick(item)}
     >
       <S.ItemImage
@@ -46,7 +54,7 @@ export default ({
         title={item.name}
         src={`data:image/png;base64,${item.icon}`}
       />
-      {!search && (
+      {!search && !trading && (
         <S.RemoveItem
           show={show ? 1 : 0}
           triggered={triggerDelete ? 1 : 0}

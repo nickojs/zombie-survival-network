@@ -3,6 +3,7 @@ import { OSRSItem } from '.';
 
 import { useAuth } from '../../contexts/authContext';
 import { NotificationTypes, useNotification } from '../../contexts/notificationContext';
+import { useTrade } from '../../contexts/tradeContext';
 import useRequest, { Options, State } from '../../hooks/useRequest';
 import Item from './item';
 
@@ -20,6 +21,7 @@ export default ({ items, search }: InventoryItemsProps) => {
 
   const { messageHandler } = useNotification();
   const { updateUser } = useAuth();
+  const { toggleItem } = useTrade();
 
   const searchItemFetchHandler = (item: OSRSItem) => {
     if (search) {
@@ -39,7 +41,7 @@ export default ({ items, search }: InventoryItemsProps) => {
   };
 
   const tradeItemHandler = (item: OSRSItem) => {
-    console.log(item);
+    toggleItem(item);
   };
 
   useEffect(() => {
