@@ -12,7 +12,7 @@ import Minimize from '../../controls';
 import {
   Block, Button, Container, Gradient, Title
 } from '../../../generalStyles';
-import { useModules } from '../../../contexts/modulesContext';
+import { ModulesName, useModules } from '../../../contexts/modulesContext';
 
 export default () => {
   const [position, setPosition] = useState<LatLng | null>(null);
@@ -93,7 +93,7 @@ export default () => {
         <Button
           type="button"
           gradient={Gradient.SECONDARY}
-          onClick={() => toggleModule('trade')}
+          onClick={() => toggleModule(ModulesName.TRADE)}
         >
           Trade items
         </Button>

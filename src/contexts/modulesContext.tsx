@@ -6,6 +6,15 @@ import { NotificationTypes, useNotification } from './notificationContext';
 import { Modules } from '../constant';
 import { useAuth } from './authContext';
 
+export enum ModulesName {
+  PROFILE = 'profile',
+  SURVIVORLIST = 'survivorList',
+  SURVIVOR = 'survivor',
+  LOCATION = 'location',
+  INVENTORY = 'inventory',
+  TRADE = 'trade'
+}
+
 export interface Module {
   id: string;
   name: string;
@@ -51,7 +60,7 @@ export const ModulesProvider: React.FC = ({ children }) => {
     return [module, copyState, moduleIndex];
   };
 
-  const toggleModule = (moduleId: string) => {
+  const toggleModule = (moduleId: ModulesName) => {
     const [module, copyModules, moduleIndex] = replaceModule(moduleId);
 
     if (module) {

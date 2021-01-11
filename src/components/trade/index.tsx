@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { ImExit } from 'react-icons/im';
 import { useSurvivor } from '../../contexts/survivorContext';
-import { useModules } from '../../contexts/modulesContext';
+import { ModulesName, useModules } from '../../contexts/modulesContext';
 import * as S from './styles';
 import { useTrade } from '../../contexts/tradeContext';
 
@@ -17,7 +17,7 @@ export default () => {
   }, []);
 
   useEffect(() => {
-    if (trading) toggleModule('inventory');
+    if (trading) toggleModule(ModulesName.INVENTORY);
   }, [trading]);
 
   return survivor && (
@@ -30,7 +30,7 @@ export default () => {
         </S.Title>
         <ImExit
           size="3em"
-          onClick={() => toggleModule('trade')}
+          onClick={() => toggleModule(ModulesName.TRADE)}
         />
       </S.TradeTitle>
       <S.YourTrade>

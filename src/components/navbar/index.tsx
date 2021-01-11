@@ -6,7 +6,7 @@ import { AiOutlineSave } from 'react-icons/ai';
 import { GiLightBackpack } from 'react-icons/gi';
 
 import { useAuth } from '../../contexts/authContext';
-import { useModules } from '../../contexts/modulesContext';
+import { ModulesName, useModules } from '../../contexts/modulesContext';
 
 import * as S from './styles';
 
@@ -23,14 +23,14 @@ export default () => {
       <S.IconButtonContainer>
         <S.IconButton
           selected={isSelected('profile') ? 1 : 0}
-          onClick={() => toggleModule('profile')}
+          onClick={() => toggleModule(ModulesName.PROFILE)}
           title="Open Profile panel"
         >
           <CgProfile />
         </S.IconButton>
         <S.IconButton
           selected={isSelected('location') ? 1 : 0}
-          onClick={() => toggleModule('location')}
+          onClick={() => toggleModule(ModulesName.LOCATION)}
           title="Open Location panel"
         >
           <MdGpsFixed />
@@ -44,7 +44,7 @@ export default () => {
         </S.IconButton>
         <S.IconButton
           selected={isSelected('inventory') ? 1 : 0}
-          onClick={() => toggleModule('inventory')}
+          onClick={() => toggleModule(ModulesName.INVENTORY)}
           title="Inventory"
         >
           <GiLightBackpack />
