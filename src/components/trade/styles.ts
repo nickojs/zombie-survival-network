@@ -96,3 +96,15 @@ export const Title = styled.h1`
   
   text-shadow: 2px 2px black;  
 `;
+
+export const TradeItemsContainer = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  align-content: flex-start;
+
+  overflow-y: auto;
+  height: 250px;
+  width: 250px;
+
+  pointer-events: none;
+`;

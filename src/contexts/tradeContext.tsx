@@ -43,6 +43,7 @@ export const TradeProvider: React.FC = ({ children }) => {
   };
 
   useEffect(() => {
+    //  do socket stuff here
     console.log(items);
   }, [items]);
 
