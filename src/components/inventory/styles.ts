@@ -76,7 +76,7 @@ export const ItemWrapper = styled.div<ItemWrapperProps>`
 `;
 
 interface ItemProps {
-  itemIsOnTrade: number;
+  itemIsOnTrade?: number;
 }
 
 export const Item = styled.div<ItemProps>`
@@ -90,9 +90,9 @@ export const Item = styled.div<ItemProps>`
 
   transition: .2s ease;
 
-  :hover img{ ${({ itemIsOnTrade }) => !itemIsOnTrade && 'filter: drop-shadow(5px 5px 8px gold);'} }
+  :hover img{ filter: ${({ itemIsOnTrade }) => !itemIsOnTrade && 'drop-shadow(5px 5px 8px gold)'} }
 
-  ${({ itemIsOnTrade }) => itemIsOnTrade && tradingItem}
+  ${({ itemIsOnTrade }) => itemIsOnTrade && tradingItem};
 `;
 
 export const ItemImage = styled.img`
