@@ -8,6 +8,7 @@ import { AuthProvider } from './contexts/authContext';
 import { SurvivorProvider } from './contexts/survivorContext';
 import { ModulesProvider } from './contexts/modulesContext';
 import { SocketProvider } from './contexts/socketContext';
+import { TradeProvider } from './contexts/tradeContext';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -15,9 +16,11 @@ ReactDOM.render(
       <AuthProvider>
         <ModulesProvider>
           <SocketProvider>
-            <SurvivorProvider>
-              <App />
-            </SurvivorProvider>
+            <TradeProvider>
+              <SurvivorProvider>
+                <App />
+              </SurvivorProvider>
+            </TradeProvider>
           </SocketProvider>
         </ModulesProvider>
       </AuthProvider>
