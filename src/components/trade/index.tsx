@@ -11,7 +11,9 @@ import { Item, ItemImage } from '../inventory/styles';
 export default () => {
   const { survivor } = useSurvivor();
   const { toggleModule } = useModules();
-  const { trading, items, toggleTrading } = useTrade();
+  const {
+    trading, items, receivedItems, recipientAck, senderAck, onAccept, onDecline, toggleTrading
+  } = useTrade();
 
   useEffect(() => {
     toggleTrading(true);
@@ -56,12 +58,36 @@ export default () => {
           {survivor.username}
           &apos;s offer
         </S.Text>
+        <S.TradeItemsContainer>
+          {receivedItems.map((item) => (
+            <Item key={item._id}>
+              <ItemImage
+                alt={item.name}
+                title={item.name}
+                src={`data:image/png;base64,${item.icon}`}
+              />
+            </Item>
+          ))}
+        </S.TradeItemsContainer>
+        {recipientAck && (
+        <p>
+          {survivor.username}
+          {' '}
+          has accepted the trade
+        </p>
+        )}
       </S.SurvivorTrade>
       <S.ButtonContainer>
-        <S.Button color="lime">
-          Accept
+        <S.Button
+          onClick={onAccept}
+          color="lime"
+        >
+          {senderAck ? 'Done' : 'Accept'}
         </S.Button>
-        <S.Button color="red">
+        <S.Button
+          onClick={onDecline}
+          color="red"
+        >
           Decline
         </S.Button>
       </S.ButtonContainer>

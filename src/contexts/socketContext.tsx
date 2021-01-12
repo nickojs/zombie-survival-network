@@ -1,10 +1,17 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import io from 'socket.io-client';
+import { useAuth } from './authContext';
 
-const socket = io('http://localhost:7001');
+const socket = io(process.env.REACT_APP_DEV_SOCKET as string);
 
 export enum SocketEvents {
-  SET_ITEMS = 'set_items',
+  SAVE_USER = 'save_user',
+  SEND_ITEMS = 'send_items',
+  DELIVER_ITEMS = 'deliver_items',
+  ACCEPT_TRADE = 'accept_trade',
+  DECLINE_TRADE = 'decline_trade',
+  SENDER_ACKNOWLEDGE = 'sender_acknowledge',
+  RECIPIENT_ACKNOWLEDGE = 'recipient_acknowledge'
 }
 
 interface SocketContextProps {
@@ -19,6 +26,7 @@ export const SocketContext = React.createContext<SocketContextProps>(
 );
 
 export const SocketProvider: React.FC = ({ children }) => {
+  const { user } = useAuth();
   const emitEvent = (event: string, data?: Record<string, any>) => {
     socket.emit(event, data);
   };
@@ -26,6 +34,10 @@ export const SocketProvider: React.FC = ({ children }) => {
   const onEvent = (event: string, cb: (...args: any[]) => void) => {
     socket.on(event, cb);
   };
+
+  useEffect(() => {
+    if (user) socket.emit(SocketEvents.SAVE_USER, user.id);
+  }, [user]);
 
   return (
     <SocketContext.Provider

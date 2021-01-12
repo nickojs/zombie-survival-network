@@ -1,21 +1,22 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { OSRSItem } from '../components/inventory';
-
-// onAccept
-// accepted
-// onDecline - just send a notification if this user or the survivor declines
-
-// survivorAccepted
-// survivorDeclined
-
-// tradeFinally - if both user accepts the trade
+import { useModules, ModulesName } from './modulesContext';
+import { SocketEvents, useSocket } from './socketContext';
+import { useSurvivor } from './survivorContext';
 
 interface TradeContextProps {
   trading: boolean;
   toggleTrading(value?: boolean): void;
 
   items: OSRSItem[];
+  receivedItems: OSRSItem[];
   toggleItem(itemId: OSRSItem): void;
+
+  onAccept(): void;
+  onDecline(): void;
+
+  senderAck: boolean;
+  recipientAck: boolean;
 }
 
 export const TradeContext = React.createContext<TradeContextProps>(
@@ -25,6 +26,22 @@ export const TradeContext = React.createContext<TradeContextProps>(
 export const TradeProvider: React.FC = ({ children }) => {
   const [trading, setTrading] = useState<boolean>(false);
   const [items, setItems] = useState<OSRSItem[]>([]);
+  const [receivedItems, setReceivedItems] = useState<OSRSItem[]>([]);
+  const [senderAck, setSenderAck] = useState<boolean>(false);
+  const [recipientAck, setRecipientAck] = useState<boolean>(false);
+
+  const { survivor } = useSurvivor();
+  const { emitEvent, onEvent } = useSocket();
+  const { toggleModule } = useModules();
+
+  const resetTradeState = () => {
+    setTrading(false);
+    setItems([]);
+    setReceivedItems([]);
+    setSenderAck(false);
+    setRecipientAck(false);
+    toggleModule(ModulesName.TRADE);
+  };
 
   const toggleItem = (item: OSRSItem) => {
     const findItemIndex = items.findIndex((i) => i._id === item._id);
@@ -42,17 +59,46 @@ export const TradeProvider: React.FC = ({ children }) => {
     setTrading(value);
   };
 
+  const onAccept = () => {
+    emitEvent(SocketEvents.ACCEPT_TRADE, { survivor });
+  };
+
+  const onDecline = () => {
+    emitEvent(SocketEvents.DECLINE_TRADE, { survivor });
+  };
+
   useEffect(() => {
-    //  do socket stuff here
-    console.log(items);
+    if (survivor) {
+      emitEvent(SocketEvents.SEND_ITEMS, { items, survivor });
+    }
   }, [items]);
+
+  useEffect(() => {
+    onEvent(SocketEvents.DELIVER_ITEMS, (data: OSRSItem[]) => {
+      setReceivedItems(data);
+    });
+    onEvent(SocketEvents.SENDER_ACKNOWLEDGE, () => {
+      setSenderAck(true);
+    });
+    onEvent(SocketEvents.RECIPIENT_ACKNOWLEDGE, () => {
+      setRecipientAck(true);
+    });
+    onEvent(SocketEvents.DECLINE_TRADE, () => {
+      resetTradeState();
+    });
+  }, []);
 
   return (
     <TradeContext.Provider value={{
       trading,
       items,
+      receivedItems,
+      senderAck,
+      recipientAck,
       toggleItem,
-      toggleTrading
+      toggleTrading,
+      onAccept,
+      onDecline
     }}
     >
       {children}
