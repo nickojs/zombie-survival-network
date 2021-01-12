@@ -16,11 +16,11 @@ ReactDOM.render(
       <AuthProvider>
         <ModulesProvider>
           <SocketProvider>
-            <TradeProvider>
-              <SurvivorProvider>
+            <SurvivorProvider>
+              <TradeProvider>
                 <App />
-              </SurvivorProvider>
-            </TradeProvider>
+              </TradeProvider>
+            </SurvivorProvider>
           </SocketProvider>
         </ModulesProvider>
       </AuthProvider>
