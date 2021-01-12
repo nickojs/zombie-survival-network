@@ -1,6 +1,15 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export const TradeGrid = styled.div`
+interface TradeGridProps {
+  disabled: number;
+}
+
+const disabledGrid = css`
+  pointer-events: none;
+  cursor: not-not-allowed;
+`;
+
+export const TradeGrid = styled.div<TradeGridProps>`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 0.3fr 1.3fr 1.4fr;
@@ -15,8 +24,9 @@ export const TradeGrid = styled.div`
   
   border: 4px outset #534f3e;
   box-shadow: 1px 1px 10px black;
-
   color: #ff981f;
+  
+  ${({ disabled }) => disabled && disabledGrid}
 
   div { 
     padding: 6px; 

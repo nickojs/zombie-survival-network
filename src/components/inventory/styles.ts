@@ -1,7 +1,16 @@
 import styled, { css } from 'styled-components';
 import inventoryBg from '../../assets/inventory.png';
 
-export const InventoryContainer = styled.div`
+interface TradeGridProps {
+  disabled: number;
+}
+
+const disabledGrid = css`
+  pointer-events: none;
+  cursor: not-allowed;
+`;
+
+export const InventoryContainer = styled.div<TradeGridProps>`
   position: relative;
   height: 485px;
   width: 350px;
@@ -10,6 +19,8 @@ export const InventoryContainer = styled.div`
   margin: 24px;
 
   filter: drop-shadow(5px 5px 5px black);
+
+  ${({ disabled }) => disabled && disabledGrid};
 
   background-image: url(${inventoryBg});
   background-size: contain;

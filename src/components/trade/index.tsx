@@ -15,7 +15,7 @@ export default () => {
     tradeState, onAccept, onDecline, toggleTrading, onExit
   } = useTrade();
   const {
-    trading, items, receivedItems, recipientAck, senderAck
+    trading, items, receivedItems, recipientAck, senderAck, recipientAvailable
   } = tradeState;
   const timer = useRef<any>();
 
@@ -30,17 +30,17 @@ export default () => {
       const inventory = modules.find((mod) => mod.id === ModulesName.INVENTORY);
       if (!inventory?.display) toggleModule(ModulesName.INVENTORY);
     }
-    if (!trading) timer.current = setTimeout(() => { toggleModule(ModulesName.TRADE); }, 100);
+    if (!trading) timer.current = setTimeout(() => { toggleModule(ModulesName.TRADE); }, 500);
     return () => { clearTimeout(timer.current); };
   }, [trading]);
 
   return survivor && (
-    <S.TradeGrid>
+    <S.TradeGrid disabled={!recipientAvailable ? 1 : 0}>
       <S.TradeTitle>
         <S.Title>
-          Trading with:
-          {' '}
-          {survivor.username}
+          {recipientAvailable
+            ? `Trading with: ${survivor.username}`
+            : `Waiting ${survivor.username} to connect...`}
         </S.Title>
         <ImExit
           size="3em"

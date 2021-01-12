@@ -32,7 +32,7 @@ export default () => {
   const { messageHandler } = useNotification();
 
   const { tradeState } = useTrade();
-  const { trading } = tradeState;
+  const { trading, recipientAvailable } = tradeState;
 
   const { user } = useAuth();
   const { items } = user || { };
@@ -83,7 +83,7 @@ export default () => {
   }, [trading]);
 
   return (
-    <S.InventoryContainer>
+    <S.InventoryContainer disabled={!recipientAvailable ? 1 : 0}>
       {!trading && (
         <S.InventoryMenu>
           <S.InventoryMenuItem
