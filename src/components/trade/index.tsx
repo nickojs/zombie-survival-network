@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ImExit } from 'react-icons/im';
 
 import { useSurvivor } from '../../contexts/survivorContext';
@@ -10,13 +10,14 @@ import { Item, ItemImage } from '../inventory/styles';
 
 export default () => {
   const { survivor } = useSurvivor();
-  const { toggleModule } = useModules();
+  const { toggleModule, modules } = useModules();
   const {
-    tradeState, onAccept, onDecline, toggleTrading
+    tradeState, onAccept, onDecline, toggleTrading, onExit
   } = useTrade();
   const {
     trading, items, receivedItems, recipientAck, senderAck
   } = tradeState;
+  const timer = useRef<any>();
 
   useEffect(() => {
     toggleTrading(true);
@@ -25,7 +26,12 @@ export default () => {
   }, []);
 
   useEffect(() => {
-    if (trading) toggleModule(ModulesName.INVENTORY);
+    if (trading) {
+      const inventory = modules.find((mod) => mod.id === ModulesName.INVENTORY);
+      if (!inventory?.display) toggleModule(ModulesName.INVENTORY);
+    }
+    if (!trading) timer.current = setTimeout(() => { toggleModule(ModulesName.TRADE); }, 100);
+    return () => { clearTimeout(timer.current); };
   }, [trading]);
 
   return survivor && (
@@ -38,7 +44,7 @@ export default () => {
         </S.Title>
         <ImExit
           size="3em"
-          onClick={() => toggleModule(ModulesName.TRADE)}
+          onClick={onExit}
         />
       </S.TradeTitle>
       <S.YourTrade>

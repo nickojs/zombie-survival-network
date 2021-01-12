@@ -9,6 +9,8 @@ export const InventoryContainer = styled.div`
   padding: 60px 50px;
   margin: 24px;
 
+  filter: drop-shadow(5px 5px 5px black);
+
   background-image: url(${inventoryBg});
   background-size: contain;
   background-position: center;

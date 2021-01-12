@@ -20,6 +20,8 @@ interface TradeContextProps {
   onAccept(): void;
   onDecline(): void;
 
+  onExit(): void;
+
   tradeState: TradeState;
 }
 
@@ -117,6 +119,10 @@ export const TradeProvider: React.FC = ({ children }) => {
     emitEvent(SocketEvents.DECLINE_TRADE, { survivor });
   };
 
+  const onExit = () => {
+    dispatch({ type: ActionTypes.RESET });
+  };
+
   useEffect(() => {
     if (survivor) {
       emitEvent(SocketEvents.SEND_ITEMS, { items, survivor });
@@ -144,7 +150,8 @@ export const TradeProvider: React.FC = ({ children }) => {
       toggleItem,
       toggleTrading,
       onAccept,
-      onDecline
+      onDecline,
+      onExit
     }}
     >
       {children}

@@ -31,6 +31,11 @@ export const TradeGrid = styled.div`
 `;
 
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
   background: #493f35;
   height: 100%;
   width: 100%;
@@ -40,11 +45,10 @@ const Container = styled.div`
 `;
 
 export const TradeTitle = styled(Container)`
-  grid-area: trade-title;
-
-  display: flex;
+  flex-direction: row;
   justify-content: space-between;
-  align-items: center;
+
+  grid-area: trade-title;
 `;
 
 export const YourTrade = styled(Container)`
@@ -104,7 +108,7 @@ export const TradeItemsContainer = styled.div`
 
   overflow-y: auto;
   height: 250px;
-  width: 250px;
+  width: 200px;
 
   pointer-events: none;
 `;

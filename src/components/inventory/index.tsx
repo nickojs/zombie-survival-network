@@ -75,6 +75,13 @@ export default () => {
     return () => { clearTimeout(timer); };
   }, [search]);
 
+  useEffect(() => {
+    if (trading) {
+      setSearchMode(false);
+      setSearchResult([]);
+    }
+  }, [trading]);
+
   return (
     <S.InventoryContainer>
       {!trading && (
