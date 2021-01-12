@@ -18,7 +18,8 @@ export default ({
   const [triggerDelete, setTriggerDelete] = useState<boolean>(false);
   const [itemTrading, setItemTrading] = useState<boolean>(false);
 
-  const { trading, items } = useTrade();
+  const { tradeState } = useTrade();
+  const { trading, items } = tradeState;
 
   const deleteItemHandler = () => {
     if (triggerDelete) deleteClick(item);

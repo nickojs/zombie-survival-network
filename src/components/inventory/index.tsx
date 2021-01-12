@@ -30,7 +30,10 @@ export default () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const { messageHandler } = useNotification();
-  const { trading } = useTrade();
+
+  const { tradeState } = useTrade();
+  const { trading } = tradeState;
+
   const { user } = useAuth();
   const { items } = user || { };
 

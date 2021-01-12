@@ -12,8 +12,11 @@ export default () => {
   const { survivor } = useSurvivor();
   const { toggleModule } = useModules();
   const {
-    trading, items, receivedItems, recipientAck, senderAck, onAccept, onDecline, toggleTrading
+    tradeState, onAccept, onDecline, toggleTrading
   } = useTrade();
+  const {
+    trading, items, receivedItems, recipientAck, senderAck
+  } = tradeState;
 
   useEffect(() => {
     toggleTrading(true);

@@ -1,47 +1,98 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useReducer } from 'react';
 import { OSRSItem } from '../components/inventory';
-import { useModules, ModulesName } from './modulesContext';
 import { SocketEvents, useSocket } from './socketContext';
 import { useSurvivor } from './survivorContext';
 
-interface TradeContextProps {
+interface TradeState {
   trading: boolean;
-  toggleTrading(value?: boolean): void;
 
   items: OSRSItem[];
   receivedItems: OSRSItem[];
+
+  senderAck: boolean;
+  recipientAck: boolean;
+}
+
+interface TradeContextProps {
+  toggleTrading(value?: boolean): void;
   toggleItem(itemId: OSRSItem): void;
 
   onAccept(): void;
   onDecline(): void;
 
-  senderAck: boolean;
-  recipientAck: boolean;
+  tradeState: TradeState;
 }
 
 export const TradeContext = React.createContext<TradeContextProps>(
   {} as TradeContextProps
 );
 
-export const TradeProvider: React.FC = ({ children }) => {
-  const [trading, setTrading] = useState<boolean>(false);
-  const [items, setItems] = useState<OSRSItem[]>([]);
-  const [receivedItems, setReceivedItems] = useState<OSRSItem[]>([]);
-  const [senderAck, setSenderAck] = useState<boolean>(false);
-  const [recipientAck, setRecipientAck] = useState<boolean>(false);
+enum ActionTypes {
+  TRADING = 'TRADING',
+  ITEMS = 'ITEMS',
+  RECEIVEDITEMS = 'RECEIVEDITEMS',
+  SENDERACK = 'SENDERACK',
+  RECIPIENTACK = 'RECIPIENTACK',
+  RESET = 'RESET'
+}
 
+type Actions =
+  | { type: ActionTypes.TRADING, status: boolean }
+  | { type: ActionTypes.ITEMS, data: OSRSItem[] }
+  | { type: ActionTypes.RECEIVEDITEMS, data: OSRSItem[] }
+  | { type: ActionTypes.SENDERACK, status: boolean }
+  | { type: ActionTypes.RECIPIENTACK, status: boolean }
+  | { type: ActionTypes.RECIPIENTACK, status: boolean }
+  | { type: ActionTypes.RESET }
+
+const initialState = {
+  trading: false,
+  items: [],
+  receivedItems: [],
+  senderAck: false,
+  recipientAck: false
+};
+
+const tradeReducer = (state: TradeState, action: Actions) => {
+  switch (action.type) {
+    case ActionTypes.TRADING:
+      return {
+        ...state,
+        trading: action.status
+      };
+    case ActionTypes.ITEMS:
+      return {
+        ...state,
+        items: action.data
+      };
+    case ActionTypes.RECEIVEDITEMS:
+      return {
+        ...state,
+        receivedItems: action.data
+      };
+    case ActionTypes.SENDERACK:
+      return {
+        ...state,
+        senderAck: action.status
+      };
+    case ActionTypes.RECIPIENTACK:
+      return {
+        ...state,
+        recipientAck: action.status
+      };
+    case ActionTypes.RESET:
+      return initialState;
+    default:
+      throw new Error(`[tradeContext] Unknown action: ${action}`);
+  }
+};
+
+export const TradeProvider: React.FC = ({ children }) => {
+  const [tradeState, dispatch] = useReducer(tradeReducer, initialState);
+
+  const { items } = tradeState;
   const { survivor } = useSurvivor();
   const { emitEvent, onEvent } = useSocket();
-  const { toggleModule } = useModules();
-
-  const resetTradeState = () => {
-    setTrading(false);
-    setItems([]);
-    setReceivedItems([]);
-    setSenderAck(false);
-    setRecipientAck(false);
-    toggleModule(ModulesName.TRADE);
-  };
 
   const toggleItem = (item: OSRSItem) => {
     const findItemIndex = items.findIndex((i) => i._id === item._id);
@@ -49,14 +100,13 @@ export const TradeProvider: React.FC = ({ children }) => {
     if (findItemIndex !== -1) {
       const copyState = [...items];
       copyState.splice(findItemIndex, 1);
-      return setItems(copyState);
+      return dispatch({ type: ActionTypes.ITEMS, data: copyState });
     }
-
-    setItems((pState) => [...pState, item]);
+    return dispatch({ type: ActionTypes.ITEMS, data: [...items, item] });
   };
 
   const toggleTrading = (value: boolean) => {
-    setTrading(value);
+    dispatch({ type: ActionTypes.TRADING, status: value });
   };
 
   const onAccept = () => {
@@ -75,26 +125,22 @@ export const TradeProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     onEvent(SocketEvents.DELIVER_ITEMS, (data: OSRSItem[]) => {
-      setReceivedItems(data);
+      dispatch({ type: ActionTypes.RECEIVEDITEMS, data });
     });
     onEvent(SocketEvents.SENDER_ACKNOWLEDGE, () => {
-      setSenderAck(true);
+      dispatch({ type: ActionTypes.SENDERACK, status: true });
     });
     onEvent(SocketEvents.RECIPIENT_ACKNOWLEDGE, () => {
-      setRecipientAck(true);
+      dispatch({ type: ActionTypes.RECIPIENTACK, status: true });
     });
     onEvent(SocketEvents.DECLINE_TRADE, () => {
-      resetTradeState();
+      dispatch({ type: ActionTypes.RESET });
     });
   }, []);
 
   return (
     <TradeContext.Provider value={{
-      trading,
-      items,
-      receivedItems,
-      senderAck,
-      recipientAck,
+      tradeState,
       toggleItem,
       toggleTrading,
       onAccept,
