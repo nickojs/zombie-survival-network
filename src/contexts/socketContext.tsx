@@ -12,6 +12,7 @@ export enum SocketEvents {
   SEND_ITEMS = 'send_items',
   DELIVER_ITEMS = 'deliver_items',
   // trade
+  RECIPIENT_STATUS = 'recipient_status',
   OPEN_TRADE = 'open_trade',
   ACCEPT_TRADE = 'accept_trade',
   DECLINE_TRADE = 'decline_trade',
@@ -19,6 +20,18 @@ export enum SocketEvents {
   // trade mutual approval
   SENDER_ACKNOWLEDGE = 'sender_acknowledge',
   RECIPIENT_ACKNOWLEDGE = 'recipient_acknowledge',
+}
+
+export interface SocketUser {
+  acceptTrade: boolean;
+  receivingItems: any[];
+  sendingItems: any[];
+  socketId: string;
+  trading: {
+    isTrading: boolean;
+    withWho: string;
+  }
+  userId: string;
 }
 
 interface SocketContextProps {
