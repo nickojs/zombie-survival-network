@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable no-nested-ternary */
+import React, { useEffect, useRef, useState } from 'react';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import { LatLng } from 'leaflet';
 
@@ -13,18 +14,21 @@ import {
   Block, Button, Container, Gradient, Title
 } from '../../../generalStyles';
 import { ModulesName, useModules } from '../../../contexts/modulesContext';
+import { SocketEvents, useSocket } from '../../../contexts/socketContext';
 
 export default () => {
-  const [position, setPosition] = useState<LatLng | null>(null);
   const [options, setOptions] = useState<Options>(null);
   const [requestData] = useRequest(options);
   const { data, error, loading } = requestData as State;
 
+  const [position, setPosition] = useState<LatLng | null>(null);
   const [flagged, setFlagged] = useState<boolean>(false);
+  const [online, setOnline] = useState<boolean>(false);
 
   const { messageHandler } = useNotification();
   const { toggleModule } = useModules();
   const { user } = useAuth();
+  const { emitEvent, onEvent } = useSocket();
   const { survivor, updateSurvivorList, clearSurvivor } = useSurvivor();
   const { location } = survivor || {};
 
@@ -62,7 +66,7 @@ export default () => {
   useEffect(() => {
     if (survivor) {
       setFlagged(false);
-
+      emitEvent(SocketEvents.REQUEST_USER_STATUS, { survivor });
       if (survivor.flags) {
         const isFlagged = survivor.flags.find((flag) => flag.flaggedBy === user?.id);
         if (isFlagged) setFlagged(true);
@@ -70,9 +74,15 @@ export default () => {
     }
   }, [survivor]);
 
+  useEffect(() => {
+    onEvent(SocketEvents.REQUEST_USER_STATUS, (
+      data: { status: boolean }
+    ) => setOnline(data.status));
+  }, []);
+
   return survivor && (
     <Container>
-      <Minimize moduleName="survivor" close={clearSurvivor} />
+      <Minimize moduleName="survivor" close={clearSurvivor} online={online} />
       <Title>
         {survivor.profile.fullName.split(' ')[0] || survivor.username}
         &apos;s details
@@ -93,9 +103,10 @@ export default () => {
         <Button
           type="button"
           gradient={Gradient.SECONDARY}
+          disabled={!online}
           onClick={() => toggleModule(ModulesName.TRADE)}
         >
-          Trade items
+          {online ? 'Trade Items' : 'Cannot trade items'}
         </Button>
       </Block>
       <Block>

@@ -11,7 +11,8 @@ export enum SocketEvents {
   ACCEPT_TRADE = 'accept_trade',
   DECLINE_TRADE = 'decline_trade',
   SENDER_ACKNOWLEDGE = 'sender_acknowledge',
-  RECIPIENT_ACKNOWLEDGE = 'recipient_acknowledge'
+  RECIPIENT_ACKNOWLEDGE = 'recipient_acknowledge',
+  REQUEST_USER_STATUS = 'request_user_status',
 }
 
 interface SocketContextProps {
