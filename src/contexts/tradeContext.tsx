@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useReducer } from 'react';
 import { OSRSItem } from '../components/inventory';
+import { NotificationTypes, useNotification } from './notificationContext';
 import { SocketEvents, useSocket } from './socketContext';
 import { useSurvivor } from './survivorContext';
 
@@ -91,10 +92,11 @@ const tradeReducer = (state: TradeState, action: Actions) => {
 
 export const TradeProvider: React.FC = ({ children }) => {
   const [tradeState, dispatch] = useReducer(tradeReducer, initialState);
+  const { items, trading } = tradeState;
 
-  const { items } = tradeState;
   const { survivor } = useSurvivor();
   const { emitEvent, onEvent } = useSocket();
+  const { messageHandler } = useNotification();
 
   const toggleItem = (item: OSRSItem) => {
     const findItemIndex = items.findIndex((i) => i._id === item._id);
@@ -120,6 +122,7 @@ export const TradeProvider: React.FC = ({ children }) => {
   };
 
   const onExit = () => {
+    emitEvent(SocketEvents.DECLINE_TRADE, { survivor });
     dispatch({ type: ActionTypes.RESET });
   };
 
@@ -130,6 +133,10 @@ export const TradeProvider: React.FC = ({ children }) => {
   }, [items]);
 
   useEffect(() => {
+    if (trading) emitEvent(SocketEvents.OPEN_TRADE, { survivor, sender: 'teste' });
+  }, [trading]);
+
+  useEffect(() => {
     onEvent(SocketEvents.DELIVER_ITEMS, (data: OSRSItem[]) => {
       dispatch({ type: ActionTypes.RECEIVEDITEMS, data });
     });
@@ -138,6 +145,9 @@ export const TradeProvider: React.FC = ({ children }) => {
     });
     onEvent(SocketEvents.RECIPIENT_ACKNOWLEDGE, () => {
       dispatch({ type: ActionTypes.RECIPIENTACK, status: true });
+    });
+    onEvent(SocketEvents.OPEN_TRADE, (data: string) => {
+      messageHandler(data, NotificationTypes.DEFAULT);
     });
     onEvent(SocketEvents.DECLINE_TRADE, () => {
       dispatch({ type: ActionTypes.RESET });

@@ -5,14 +5,20 @@ import { useAuth } from './authContext';
 const socket = io(process.env.REACT_APP_DEV_SOCKET as string);
 
 export enum SocketEvents {
+  // user
   SAVE_USER = 'save_user',
+  REQUEST_USER_STATUS = 'request_user_status',
+  // items
   SEND_ITEMS = 'send_items',
   DELIVER_ITEMS = 'deliver_items',
+  // trade
+  OPEN_TRADE = 'open_trade',
   ACCEPT_TRADE = 'accept_trade',
   DECLINE_TRADE = 'decline_trade',
+  DECLINE_EXISTING_TRADE = 'decline_existing_trade',
+  // trade mutual approval
   SENDER_ACKNOWLEDGE = 'sender_acknowledge',
   RECIPIENT_ACKNOWLEDGE = 'recipient_acknowledge',
-  REQUEST_USER_STATUS = 'request_user_status',
 }
 
 interface SocketContextProps {
