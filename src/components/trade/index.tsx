@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ImExit } from 'react-icons/im';
 
 import { useSurvivor } from '../../contexts/survivorContext';
@@ -7,9 +7,15 @@ import { useTrade } from '../../contexts/tradeContext';
 
 import * as S from './styles';
 import { Item, ItemImage } from '../inventory/styles';
+import { useAuth } from '../../contexts/authContext';
+import { INVENTORY_SPACE } from '../../constant';
 
 export default () => {
+  const [spaces, setSpaces] = useState<number>(0);
+  const [allowTrade, setAllowTrade] = useState<boolean>(false);
+
   const { survivor } = useSurvivor();
+  const { user } = useAuth();
   const { toggleModule, modules } = useModules();
   const {
     tradeState, onAccept, onDecline, toggleTrading, onExit
@@ -33,6 +39,17 @@ export default () => {
     if (!trading) timer.current = setTimeout(() => { toggleModule(ModulesName.TRADE); }, 500);
     return () => { clearTimeout(timer.current); };
   }, [trading]);
+
+  useEffect(() => {
+    if (user && user.items) {
+      const tradeDiff = user.items.length - items.length + receivedItems.length - INVENTORY_SPACE;
+      setSpaces(tradeDiff);
+    }
+  }, [user, items, receivedItems]);
+
+  useEffect(() => {
+    setAllowTrade(spaces < 1);
+  }, [spaces]);
 
   return survivor && (
     <S.TradeGrid disabled={!recipientAvailable ? 1 : 0}>
@@ -87,7 +104,19 @@ export default () => {
         )}
       </S.SurvivorTrade>
       <S.ButtonContainer>
+        <S.InventoryData>
+          {allowTrade ? (
+            <p>
+              {spaces === 0 ? 'no' : Math.abs(spaces)}
+              {' '}
+              inventory space remaining
+            </p>
+          ) : (
+            <p>Plase free inventory spaces</p>
+          )}
+        </S.InventoryData>
         <S.Button
+          disabled={!allowTrade}
           onClick={onAccept}
           color="lime"
         >

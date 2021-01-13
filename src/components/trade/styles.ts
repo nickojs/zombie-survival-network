@@ -6,7 +6,7 @@ interface TradeGridProps {
 
 const disabledGrid = css`
   pointer-events: none;
-  cursor: not-not-allowed;
+  cursor: not-allowed;
 `;
 
 export const TradeGrid = styled.div<TradeGridProps>`
@@ -37,7 +37,6 @@ export const TradeGrid = styled.div<TradeGridProps>`
     font-size: 12px;
     font-family: 'Press Start 2P', cursive;
   }
-
 `;
 
 const Container = styled.div`
@@ -71,33 +70,52 @@ export const SurvivorTrade = styled(Container)`
 
 export const ButtonContainer = styled.div`
   position: absolute;
-  top: 40%; left: 50%;
-  transform: translate(-50%, 0%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
 
-  height: 160px;
+  height: 250px;
 `;
 
 interface ButtonProps {
-  color: 'red' | 'lime'
+  color: 'red' | 'lime';
 }
 
-export const Button = styled.button<ButtonProps>`
+const ContainerBaseStyle = css`
   width: 115px;
   height: 60px;
   padding: 8px;
 
   text-align: center;
   border: 8px double #534f3e;
-  
+  background: black;
+`;
+
+export const Button = styled.button<ButtonProps>`
+  ${ContainerBaseStyle};  
   cursor: pointer;
 
   color: ${({ color }) => color};
-  background: black;
+
+  :disabled { 
+    ${disabledGrid}
+    filter: grayscale(100%);
+  };
+`;
+
+export const InventoryData = styled.div`
+  ${ContainerBaseStyle};  
+  height: 80px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  p{ font-size: 8px; }
 `;
 
 export const Text = styled.p`
