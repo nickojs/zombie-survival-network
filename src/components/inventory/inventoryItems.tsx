@@ -28,7 +28,7 @@ export default ({ items, search }: InventoryItemsProps) => {
       setOptions({
         method: 'POST',
         url: '/inventory/',
-        data: { OSRSId: item._id }
+        data: { OSRSId: item.id }
       });
     }
   };
@@ -36,7 +36,7 @@ export default ({ items, search }: InventoryItemsProps) => {
   const deleteInventoryItemHandler = (item: OSRSItem) => {
     setOptions({
       method: 'DELETE',
-      url: `/inventory/${item._id}`
+      url: `/inventory/${item.id}`
     });
   };
 
@@ -59,7 +59,7 @@ export default ({ items, search }: InventoryItemsProps) => {
     <S.ItemWrapper disabled={loading ? 1 : 0}>
       {items.map((item) => (
         <Item
-          key={item._id}
+          key={item.id}
           item={item}
           search={search}
           searchClick={searchItemFetchHandler}

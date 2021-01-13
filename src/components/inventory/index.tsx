@@ -10,13 +10,13 @@ import * as S from './styles';
 import { useTrade } from '../../contexts/tradeContext';
 
 export interface OSRSItem {
-  _id: string;
+  id: string;
   name: string;
   icon: string;
 }
 
 // services
-const fetchOSRSItem = (itemId: string) => axios.get(`https://api.osrsbox.com/items?where={ "_id": "${itemId}", "duplicate": false }`);
+const fetchOSRSItem = (itemId: string) => axios.get(`https://api.osrsbox.com/items?where={ "id": "${itemId}", "duplicate": false }`);
 
 const fetchOSRSItems = (name: string) => axios
   .get(`https://api.osrsbox.com/items?where={ "$text" :{ "$search": "${name}" }, "duplicate": false }`);
@@ -83,7 +83,7 @@ export default () => {
   }, [trading]);
 
   return (
-    <S.InventoryContainer disabled={!recipientAvailable ? 1 : 0}>
+    <S.InventoryContainer disabled={trading && !recipientAvailable ? 1 : 0}>
       {!trading && (
         <S.InventoryMenu>
           <S.InventoryMenuItem

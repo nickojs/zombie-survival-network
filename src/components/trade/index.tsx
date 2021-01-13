@@ -51,7 +51,7 @@ export default () => {
         <S.Text>Your offer</S.Text>
         <S.TradeItemsContainer>
           {items.map((item) => (
-            <Item key={item._id}>
+            <Item key={item.id}>
               <ItemImage
                 alt={item.name}
                 title={item.name}
@@ -69,7 +69,7 @@ export default () => {
         </S.Text>
         <S.TradeItemsContainer>
           {receivedItems.map((item) => (
-            <Item key={item._id}>
+            <Item key={item.id}>
               <ItemImage
                 alt={item.name}
                 title={item.name}

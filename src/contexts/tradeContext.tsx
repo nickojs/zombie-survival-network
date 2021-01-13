@@ -111,7 +111,7 @@ export const TradeProvider: React.FC = ({ children }) => {
   const interval = useRef<any>();
 
   const toggleItem = (item: OSRSItem) => {
-    const findItemIndex = items.findIndex((i) => i._id === item._id);
+    const findItemIndex = items.findIndex((i) => i.id === item.id);
 
     if (findItemIndex !== -1) {
       const copyState = [...items];

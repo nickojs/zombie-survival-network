@@ -39,7 +39,7 @@ export default ({
   }, [triggerDelete]);
 
   useEffect(() => {
-    const findItem = items.find((i) => i._id === item._id);
+    const findItem = items.find((i) => i.id === item.id);
     setItemTrading(!!findItem);
   }, [items]);
 
