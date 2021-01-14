@@ -17,6 +17,7 @@ export enum SocketEvents {
   ACCEPT_TRADE = 'accept_trade',
   DECLINE_TRADE = 'decline_trade',
   DECLINE_EXISTING_TRADE = 'decline_existing_trade',
+  FINISH_TRADE = 'finish_trade',
   // trade mutual approval
   SENDER_ACKNOWLEDGE = 'sender_acknowledge',
   RECIPIENT_ACKNOWLEDGE = 'recipient_acknowledge',
@@ -56,7 +57,7 @@ export const SocketProvider: React.FC = ({ children }) => {
   };
 
   useEffect(() => {
-    if (user) socket.emit(SocketEvents.SAVE_USER, user.id);
+    if (user) socket.emit(SocketEvents.SAVE_USER, { userId: user.id, username: user.username });
   }, [user]);
 
   return (

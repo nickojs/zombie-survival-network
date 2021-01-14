@@ -42,7 +42,7 @@ export default ({ user }: UserPreviewProps) => {
       onClick={fetchSurvivor}
     >
       <S.SubCard>
-        <p>{profile.fullName}</p>
+        <p>{user.username}</p>
         <p>
           {profile.age}
           y/o

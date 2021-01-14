@@ -10,7 +10,7 @@ export interface Survivor extends User {
 
 interface SurvivorContextProps {
   survivor: Survivor | null;
-  survivorList: Survivor[] | undefined;
+  survivorList: Survivor[];
   loading: boolean;
   survivorHandler(survivor: Survivor): void;
   updateSurvivorList(): void;
@@ -23,7 +23,7 @@ export const SurvivorContext = React.createContext<SurvivorContextProps>(
 
 export const SurvivorProvider: React.FC = ({ children }) => {
   const [survivor, setSurvivor] = useState<Survivor | null>(null);
-  const [survivorList, setSurvivorList] = useState<Survivor[]>();
+  const [survivorList, setSurvivorList] = useState<Survivor[]>([]);
 
   const [options, setOptions] = useState<Options>(null);
   const [requestData] = useRequest(options);

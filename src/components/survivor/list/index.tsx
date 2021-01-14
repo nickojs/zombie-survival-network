@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { Container, Title } from '../../../generalStyles';
 import { Survivor, useSurvivor } from '../../../contexts/survivorContext';
@@ -8,21 +8,16 @@ import SurvivorPreview from './survivor';
 import * as S from './styles';
 
 export default () => {
-  const [localSurvivors, setLocalSurvivors] = useState<Survivor[]>();
   const { survivorList } = useSurvivor();
-
-  useEffect(() => {
-    setLocalSurvivors(survivorList);
-  }, [survivorList]);
 
   return (
     <Container>
       <Minimize moduleName="survivorList" />
       <Title>Survivors</Title>
-      <p>Displays only active, full profile users</p>
+      <p>Displays only activated profiles</p>
 
       <S.ListContainer>
-        {localSurvivors && localSurvivors.map((user: Survivor) => (
+        {survivorList.map((user: Survivor) => (
           <SurvivorPreview
             key={user.id}
             user={user}

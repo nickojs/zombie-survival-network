@@ -2,6 +2,7 @@ import React, {
   useContext, useEffect, useReducer, useRef
 } from 'react';
 import { OSRSItem } from '../components/inventory';
+import { useAuth } from './authContext';
 import { NotificationTypes, useNotification } from './notificationContext';
 import { SocketEvents, SocketUser, useSocket } from './socketContext';
 import { useSurvivor } from './survivorContext';
@@ -105,6 +106,7 @@ export const TradeProvider: React.FC = ({ children }) => {
   const [tradeState, dispatch] = useReducer(tradeReducer, initialState);
   const { items, trading, recipientAvailable } = tradeState;
 
+  const { updateUser } = useAuth();
   const { survivor } = useSurvivor();
   const { emitEvent, onEvent } = useSocket();
   const { messageHandler } = useNotification();
@@ -176,6 +178,11 @@ export const TradeProvider: React.FC = ({ children }) => {
     });
     onEvent(SocketEvents.DECLINE_TRADE, () => {
       dispatch({ type: ActionTypes.RESET });
+    });
+    onEvent(SocketEvents.FINISH_TRADE, (message: string) => {
+      dispatch({ type: ActionTypes.RESET });
+      messageHandler(message, NotificationTypes.SUCCESS);
+      updateUser();
     });
     onEvent(SocketEvents.RECIPIENT_STATUS, (data: SocketUser) => {
       dispatch({ type: ActionTypes.RECIPIENTAVAILABLE, status: data.trading.isTrading });

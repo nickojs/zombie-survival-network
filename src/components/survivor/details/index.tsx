@@ -84,7 +84,7 @@ export default () => {
     <Container>
       <Minimize moduleName="survivor" close={clearSurvivor} online={online} />
       <Title>
-        {survivor.profile.fullName.split(' ')[0] || survivor.username}
+        {survivor.username}
         &apos;s details
       </Title>
       <Block>
