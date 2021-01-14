@@ -173,6 +173,9 @@ export const TradeProvider: React.FC = ({ children }) => {
     onEvent(SocketEvents.RECIPIENT_ACKNOWLEDGE, () => {
       dispatch({ type: ActionTypes.RECIPIENTACK, status: true });
     });
+    onEvent(SocketEvents.RECIPIENT_STATUS, (data: SocketUser) => {
+      dispatch({ type: ActionTypes.RECIPIENTAVAILABLE, status: data.trading.isTrading });
+    });
     onEvent(SocketEvents.OPEN_TRADE, (data: string) => {
       messageHandler(data, NotificationTypes.DEFAULT);
     });
@@ -183,9 +186,6 @@ export const TradeProvider: React.FC = ({ children }) => {
       dispatch({ type: ActionTypes.RESET });
       messageHandler(message, NotificationTypes.SUCCESS);
       updateUser();
-    });
-    onEvent(SocketEvents.RECIPIENT_STATUS, (data: SocketUser) => {
-      dispatch({ type: ActionTypes.RECIPIENTAVAILABLE, status: data.trading.isTrading });
     });
   }, []);
 
