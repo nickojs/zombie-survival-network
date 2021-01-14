@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import io from 'socket.io-client';
 import { useAuth } from './authContext';
+import { NotificationTypes, useNotification } from './notificationContext';
 
 const socket = io(process.env.REACT_APP_DEV_SOCKET as string);
 
@@ -21,6 +22,7 @@ export enum SocketEvents {
   // trade mutual approval
   SENDER_ACKNOWLEDGE = 'sender_acknowledge',
   RECIPIENT_ACKNOWLEDGE = 'recipient_acknowledge',
+  ERROR = 'error'
 }
 
 export interface SocketUser {
@@ -48,6 +50,8 @@ export const SocketContext = React.createContext<SocketContextProps>(
 
 export const SocketProvider: React.FC = ({ children }) => {
   const { user } = useAuth();
+  const { messageHandler } = useNotification();
+
   const emitEvent = (event: string, data?: Record<string, any>) => {
     socket.emit(event, data);
   };
@@ -59,6 +63,12 @@ export const SocketProvider: React.FC = ({ children }) => {
   useEffect(() => {
     if (user) socket.emit(SocketEvents.SAVE_USER, { userId: user.id, username: user.username });
   }, [user]);
+
+  useEffect(() => {
+    onEvent(SocketEvents.ERROR, (errorMsg: string) => {
+      messageHandler(errorMsg, NotificationTypes.ERROR);
+    });
+  }, []);
 
   return (
     <SocketContext.Provider
