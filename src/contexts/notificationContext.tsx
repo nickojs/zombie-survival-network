@@ -1,4 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {
+  useContext, useEffect, useRef, useState
+} from 'react';
 
 export enum NotificationTypes {
   SUCCESS,
@@ -8,8 +10,9 @@ export enum NotificationTypes {
 }
 
 interface NotificationContextProps {
-  notification: string | null;
+  notification: string;
   type: NotificationTypes;
+  show: boolean;
   messageHandler(msg: string, type: NotificationTypes): void;
   dismissNotification(): void;
 }
@@ -19,30 +22,52 @@ export const NotificationContext = React.createContext<NotificationContextProps>
 );
 
 export const NotificationProvider: React.FC = ({ children }) => {
-  const [notification, setNotification] = useState<string | null>(null);
+  const [notification, setNotification] = useState<string>('');
+  const [show, setShow] = useState< boolean>(false);
   const [type, setType] = useState<NotificationTypes>(NotificationTypes.DEFAULT);
 
+  const notificationTimer = useRef<any>();
+  const showTimer = useRef<any>();
+
   const messageHandler = (msg: string, type: NotificationTypes) => {
-    setNotification(msg);
-    setType(type);
+    if (msg !== notification) {
+      setNotification(msg);
+      setType(type);
+      setShow(true);
+    }
   };
 
-  const dismissNotification = () => setNotification(null);
+  const dismissNotification = () => { setShow(false); };
 
   useEffect(() => {
-    if (!notification) return;
-    const timer = setTimeout(() => {
-      setNotification(null);
-    }, 3000);
-
-    return () => { clearTimeout(timer); };
+    if (notification) {
+      showTimer.current = setTimeout(() => {
+        setShow(false);
+      }, 3000);
+    }
+    return () => {
+      clearTimeout(showTimer.current);
+    };
   }, [notification]);
+
+  useEffect(() => {
+    if (!show) {
+      notificationTimer.current = setTimeout(() => {
+        setNotification('');
+      }, 1000);
+
+      return () => {
+        clearTimeout(notificationTimer.current);
+      };
+    }
+  }, [show]);
 
   return (
     <NotificationContext.Provider
       value={{
         type,
         notification,
+        show,
         messageHandler,
         dismissNotification
       }}

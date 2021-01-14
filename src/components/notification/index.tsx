@@ -5,15 +5,17 @@ import { useNotification } from '../../contexts/notificationContext';
 import * as S from './styles';
 
 export default () => {
-  const { notification, dismissNotification, type } = useNotification();
+  const {
+    notification, type, show, dismissNotification
+  } = useNotification();
 
-  return (
+  return notification ? (
     <S.NotificationContainer
       onClick={dismissNotification}
-      display={notification ? 1 : 0}
+      display={show ? 1 : 0}
       type={type}
     >
       <p>{notification}</p>
     </S.NotificationContainer>
-  );
+  ) : <></>;
 };

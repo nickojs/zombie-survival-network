@@ -45,17 +45,26 @@ const notificationColor = (type: NotificationTypes) => {
   }
 };
 
+const disabledDiv = css`
+  visibility: hidden;
+  opacity: 0;
+`;
+
 export const NotificationContainer = styled.div<NotificationProps>`
   position: absolute;
   top: 5%; left: 50%;
   transform: translate(-50%, -50%);
-  display: ${({ display }) => (display ? 'block' : 'none')};
 
   padding: 6px 12px;
   font-weight: bold;
-
   animation: ${fadeIn} 1s cubic-bezier(0.23, 1, 0.320, 1);
 
   border-radius: 4px;
+
+  visibility: visible;
+  opacity: 1;
+  transition: opacity .5s, visibility .5s;
+
+  ${({ display }) => !display && disabledDiv};
   ${({ type }) => notificationColor(type)}
 `;
