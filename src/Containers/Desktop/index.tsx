@@ -24,8 +24,8 @@ export default () => {
     { id: ModulesName.SURVIVORLIST, Component: SurvivorList, module: survivorList },
     { id: ModulesName.SURVIVOR, Component: Survivor, module: survivor },
     { id: ModulesName.PROFILE, Component: Profile, module: profile },
-    { id: ModulesName.LOCATION, Component: Location, module: location }
-    // { id: ModulesName.INVENTORY, Component: Inventory, module: inventory },
+    { id: ModulesName.LOCATION, Component: Location, module: location },
+    { id: ModulesName.INVENTORY, Component: Inventory, module: inventory }
     // { id: ModulesName.TRADE, Component: Trade, module: trade }
   ];
 

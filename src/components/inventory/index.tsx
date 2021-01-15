@@ -45,11 +45,12 @@ export default () => {
       const getRequests = items.map((item) => fetchOSRSItem(item.OSRSId));
       Promise.all(getRequests)
         .then((res) => {
+          setInventory([]);
           res.forEach((response) => {
             const { data } = response;
             const { _items } = data;
             const uniqueItem = _items[0];
-            if (uniqueItem === undefined) return;
+            if (!uniqueItem) return;
             setInventory((pState) => [...pState, uniqueItem]);
           });
         }).catch(() => {
