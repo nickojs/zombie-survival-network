@@ -1,6 +1,4 @@
-import React, {
-  FunctionComponent, useContext, useState, useEffect
-} from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import useRequest, { Options, State } from '../hooks/useRequest';
 import { NotificationTypes, useNotification } from './notificationContext';
 import { Modules } from '../constant';
@@ -16,20 +14,22 @@ export enum ModulesName {
 }
 
 export interface Module {
-  id: string;
   name: string;
-  Component: FunctionComponent;
   display: boolean;
   isDockable: boolean;
-  screenPos?: { x: number; y: number };
+  screenPos: { x: number; y: number };
+}
+
+type ModulesObj = {
+  [key in ModulesName]: Module;
 }
 
 interface ModulesContextProps {
-  modules: Module[];
+  modules: ModulesObj;
   loading: boolean;
-  toggleModule(moduleId: string): void;
-  isSelected(moduleId: string): boolean;
-  updatePosition(moduleId: string, position: Position): void;
+  toggleModule(moduleId: ModulesName): void;
+  isSelected(moduleId: ModulesName): boolean;
+  updatePosition(moduleId: ModulesName, position: Position): void;
   uploadModulesPos(): void;
 }
 
@@ -43,7 +43,7 @@ export const ModulesContext = React.createContext<ModulesContextProps>(
 );
 
 export const ModulesProvider: React.FC = ({ children }) => {
-  const [modules, setModules] = useState<Module[]>(Modules);
+  const [modules, setModules] = useState<ModulesObj>(Modules);
 
   const [options, setOptions] = useState<Options>(null);
   const [requestData] = useRequest(options);
@@ -52,37 +52,25 @@ export const ModulesProvider: React.FC = ({ children }) => {
   const { messageHandler } = useNotification();
   const { user } = useAuth();
 
-  const replaceModule = (moduleId: string): [Module | undefined, Module[], number] => {
-    const copyState = [...modules];
-    const module = copyState.find((module) => module.id === moduleId);
-    const moduleIndex = copyState.findIndex((module) => module.id === moduleId);
-
-    return [module, copyState, moduleIndex];
-  };
-
   const toggleModule = (moduleId: ModulesName) => {
-    const [module, copyModules, moduleIndex] = replaceModule(moduleId);
+    const copyState = { ...modules };
+    const module = copyState[moduleId];
 
     if (module) {
       module.display = !module.display;
-      copyModules.splice(moduleIndex, 1, module);
-      setModules(copyModules);
+      setModules(copyState);
     }
   };
 
-  const isSelected = (moduleId: string) => {
-    const module = modules.find((module) => module.id === moduleId);
-    if (!module) return false;
-    return module.display;
-  };
+  const isSelected = (moduleId: ModulesName) => modules[moduleId].display;
 
-  const updatePosition = (moduleId: string, position: Position) => {
-    const [module, copyModules, moduleIndex] = replaceModule(moduleId);
+  const updatePosition = (moduleId: ModulesName, position: Position) => {
+    const copyState = { ...modules };
+    const module = copyState[moduleId];
 
     if (module) {
       module.screenPos = position;
-      copyModules.splice(moduleIndex, 1, module);
-      setModules(copyModules);
+      setModules(copyState);
     }
   };
 
@@ -107,17 +95,8 @@ export const ModulesProvider: React.FC = ({ children }) => {
       const { containers } = user;
       if (containers) {
         const { position } = containers;
-        const parsePos: Module[] = JSON.parse(position);
-        const copyState = [...modules];
-
-        for (let i = 0; i < copyState.length; i++) {
-          const currentMod = copyState[i];
-          const mod = parsePos.find((pos) => pos.id === currentMod.id);
-          const modIndex = parsePos.findIndex((pos) => pos.id === currentMod.id);
-          const mergeMod = { ...currentMod, ...mod };
-
-          if (modIndex > -1) copyState.splice(modIndex, 1, mergeMod);
-        }
+        const parsePos: ModulesObj = JSON.parse(position);
+        const copyState = { ...modules, ...parsePos };
         setModules(copyState);
       }
     }

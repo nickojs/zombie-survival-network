@@ -1,9 +1,9 @@
-import Profile from '../components/profile';
-import SurvivorList from '../components/survivor/list';
-import Survivor from '../components/survivor/details';
-import Location from '../components/location';
-import Inventory from '../components/inventory';
-import Trade from '../components/trade';
+// import Profile from '../components/profile';
+// import SurvivorList from '../components/survivor/list';
+// import Survivor from '../components/survivor/details';
+// import Location from '../components/location';
+// import Inventory from '../components/inventory';
+// import Trade from '../components/trade';
 
 const CONTAINER_WIDTH = 400;
 const CONTAINER_HEIGHT = 500;
@@ -16,11 +16,9 @@ export const left = 0;
 
 export const INVENTORY_SPACE = 5;
 
-export const Modules = [
-  {
-    id: 'profile',
+export const Modules = {
+  profile: {
     name: 'Profile',
-    Component: Profile,
     display: false,
     isDockable: false,
     screenPos: {
@@ -28,10 +26,8 @@ export const Modules = [
       y: 0
     }
   },
-  {
-    id: 'survivorList',
+  survivorList: {
     name: 'Survivors',
-    Component: SurvivorList,
     display: true,
     isDockable: true,
     screenPos: {
@@ -39,10 +35,8 @@ export const Modules = [
       y: 0
     }
   },
-  {
-    id: 'survivor',
+  survivor: {
     name: 'Details',
-    Component: Survivor,
     display: true,
     isDockable: true,
     screenPos: {
@@ -50,10 +44,8 @@ export const Modules = [
       y: 0
     }
   },
-  {
-    id: 'location',
+  location: {
     name: 'Location',
-    Component: Location,
     display: false,
     isDockable: false,
     screenPos: {
@@ -61,10 +53,8 @@ export const Modules = [
       y: below
     }
   },
-  {
-    id: 'inventory',
+  inventory: {
     name: 'Inventory',
-    Component: Inventory,
     display: false,
     isDockable: false,
     screenPos: {
@@ -72,10 +62,8 @@ export const Modules = [
       y: 0
     }
   },
-  {
-    id: 'trade',
+  trade: {
     name: 'Trade',
-    Component: Trade,
     display: false,
     isDockable: false,
     screenPos: {
@@ -83,4 +71,4 @@ export const Modules = [
       y: 0
     }
   }
-];
+};

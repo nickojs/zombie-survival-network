@@ -32,6 +32,23 @@ const loadingCss = css`
 export enum Gradient {
   MAIN, SECONDARY
 }
+interface DisabledDivProps {
+  disabled: number;
+}
+
+const disabledDiv = css`
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+`;
+
+export const SpecialDiv = styled.div<DisabledDivProps>`
+  visibility: visible;
+  opacity: 1;
+  transition: opacity .5s, visibility .5s; 
+
+  ${({ disabled }) => disabled && disabledDiv}
+`;
 
 export const Container = styled.div`
   position: relative;
