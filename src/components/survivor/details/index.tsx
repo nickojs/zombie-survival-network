@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import { LatLng } from 'leaflet';
 
@@ -24,6 +24,8 @@ export default () => {
   const [position, setPosition] = useState<LatLng | null>(null);
   const [flagged, setFlagged] = useState<boolean>(false);
   const [online, setOnline] = useState<boolean>(false);
+
+  const interval = useRef<any>();
 
   const { messageHandler } = useNotification();
   const { toggleModule } = useModules();
@@ -66,12 +68,16 @@ export default () => {
   useEffect(() => {
     if (survivor) {
       setFlagged(false);
-      emitEvent(SocketEvents.REQUEST_USER_STATUS, { survivor });
+      interval.current = setInterval(() => {
+        emitEvent(SocketEvents.REQUEST_USER_STATUS, { survivor });
+      }, 500);
       if (survivor.flags) {
         const isFlagged = survivor.flags.find((flag) => flag.flaggedBy === user?.id);
         if (isFlagged) setFlagged(true);
       }
     }
+
+    return () => { clearInterval(interval.current); };
   }, [survivor]);
 
   useEffect(() => {
