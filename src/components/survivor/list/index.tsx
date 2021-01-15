@@ -6,13 +6,14 @@ import Minimize from '../../../components/controls';
 import SurvivorPreview from './survivor';
 
 import * as S from './styles';
+import { ModulesName } from '../../../contexts/modulesContext';
 
 export default () => {
   const { survivorList } = useSurvivor();
 
   return (
     <Container>
-      <Minimize moduleName="survivorList" />
+      <Minimize moduleName={ModulesName.SURVIVORLIST} />
       <Title>Survivors</Title>
       <p>Displays only activated profiles</p>
 

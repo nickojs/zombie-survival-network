@@ -33,7 +33,7 @@ export default () => {
 
   useEffect(() => {
     if (trading) {
-      const inventory = modules.find((mod) => mod.id === ModulesName.INVENTORY);
+      const { inventory } = modules;
       if (!inventory?.display) toggleModule(ModulesName.INVENTORY);
     }
     if (!trading) timer.current = setTimeout(() => { toggleModule(ModulesName.TRADE); }, 500);

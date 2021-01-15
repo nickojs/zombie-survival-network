@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import { LatLng } from 'leaflet';
 
@@ -82,7 +82,7 @@ export default () => {
 
   return survivor && (
     <Container>
-      <Minimize moduleName="survivor" close={clearSurvivor} online={online} />
+      <Minimize moduleName={ModulesName.SURVIVOR} close={clearSurvivor} online={online} />
       <Title>
         {survivor.username}
         &apos;s details

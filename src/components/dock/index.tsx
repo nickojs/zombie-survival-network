@@ -1,20 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { MdArrowDropUp, MdArrowDropDown } from 'react-icons/md';
-import { useModules, Module } from '../../contexts/modulesContext';
+import { useModules, ModulesName } from '../../contexts/modulesContext';
 
 import * as S from './styles';
 
 export default () => {
   const [menu, toggleMenu] = useState<boolean>(false);
-  const [dockedModules, setDockedModules] = useState<Module[]>([]);
   const menuHandler = () => toggleMenu(!menu);
 
   const { modules, toggleModule } = useModules();
-
-  useEffect(() => {
-    const filterModules = modules.filter((mo) => !mo.display && mo.isDockable);
-    setDockedModules(filterModules);
-  }, [modules]);
 
   return (
     <S.Footer>
@@ -25,15 +19,21 @@ export default () => {
         {menu ? <MdArrowDropDown /> : <MdArrowDropUp />}
       </S.ToggleButton>
       <S.FootContainer show={menu ? 1 : 0}>
-        {dockedModules.map((module) => (
-          <S.MenuItem
-            key={module.id}
-            role="button"
-            onClick={() => toggleModule(module.id)}
-          >
-            {module.name}
-          </S.MenuItem>
-        ))}
+        {(Object.keys(modules) as Array<keyof typeof modules>).map((key) => {
+          const mod = modules[key];
+          const testMod = !mod.display && mod.isDockable;
+
+          return testMod && (
+            <S.MenuItem
+              key={key}
+              role="button"
+              onClick={() => toggleModule(key)}
+            >
+              {mod.name}
+            </S.MenuItem>
+          );
+        })}
+
       </S.FootContainer>
     </S.Footer>
   );

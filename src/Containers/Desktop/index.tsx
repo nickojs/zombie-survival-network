@@ -24,9 +24,9 @@ export default () => {
     { id: ModulesName.SURVIVORLIST, Component: SurvivorList, module: survivorList },
     { id: ModulesName.SURVIVOR, Component: Survivor, module: survivor },
     { id: ModulesName.PROFILE, Component: Profile, module: profile },
-    { id: ModulesName.LOCATION, Component: Location, module: location },
-    { id: ModulesName.INVENTORY, Component: Inventory, module: inventory },
-    { id: ModulesName.TRADE, Component: Trade, module: trade }
+    { id: ModulesName.LOCATION, Component: Location, module: location }
+    // { id: ModulesName.INVENTORY, Component: Inventory, module: inventory },
+    // { id: ModulesName.TRADE, Component: Trade, module: trade }
   ];
 
   return (
@@ -45,7 +45,10 @@ export default () => {
             const { screenPos, display } = module;
 
             return (
-              <SpecialDiv disabled={display ? 0 : 1}>
+              <SpecialDiv
+                key={id}
+                disabled={display ? 0 : 1}
+              >
                 <Rnd
                   bounds=".limiter"
                   // @ts-ignore - ignoring 'default' because it is badly typed

@@ -22,14 +22,14 @@ export default () => {
       {token && (
       <S.IconButtonContainer>
         <S.IconButton
-          selected={isSelected('profile') ? 1 : 0}
+          selected={isSelected(ModulesName.PROFILE) ? 1 : 0}
           onClick={() => toggleModule(ModulesName.PROFILE)}
           title="Open Profile panel"
         >
           <CgProfile />
         </S.IconButton>
         <S.IconButton
-          selected={isSelected('location') ? 1 : 0}
+          selected={isSelected(ModulesName.LOCATION) ? 1 : 0}
           onClick={() => toggleModule(ModulesName.LOCATION)}
           title="Open Location panel"
         >
@@ -43,7 +43,7 @@ export default () => {
           <AiOutlineSave />
         </S.IconButton>
         <S.IconButton
-          selected={isSelected('inventory') ? 1 : 0}
+          selected={isSelected(ModulesName.INVENTORY) ? 1 : 0}
           onClick={() => toggleModule(ModulesName.INVENTORY)}
           title="Inventory"
         >

@@ -2,11 +2,13 @@
 import React from 'react';
 import { MdArrowDropDown } from 'react-icons/md';
 import { IoCloseOutline } from 'react-icons/io5';
-import { useModules } from '../../contexts/modulesContext';
+import { ModulesName, useModules } from '../../contexts/modulesContext';
 import * as S from './styles';
 
+type ModuleName = ModulesName;
+
 interface ControlsProps {
-  moduleName: string;
+  moduleName: ModuleName;
   online?: boolean;
   close?: () => void;
 }
