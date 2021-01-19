@@ -1,15 +1,9 @@
 import styled, { css } from 'styled-components';
 
-interface TradeGridProps {
-  disabled: number;
-}
-
-const disabledGrid = css`
-  pointer-events: none;
-  cursor: not-allowed;
-`;
-
-export const TradeGrid = styled.div<TradeGridProps>`
+export const TradeGrid = styled.div`
+  position: absolute;
+  z-index: 9999;
+  
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 0.3fr 1.3fr 1.4fr;
@@ -26,8 +20,6 @@ export const TradeGrid = styled.div<TradeGridProps>`
   box-shadow: 1px 1px 10px black;
   color: #ff981f;
   
-  ${({ disabled }) => disabled && disabledGrid}
-
   div { 
     padding: 6px; 
     text-align: center;
@@ -68,7 +60,16 @@ export const SurvivorTrade = styled(Container)`
   grid-area: survivor-trade;
 `;
 
-export const ButtonContainer = styled.div`
+interface ButtonGridProps {
+  disabled: number;
+}
+
+const disabledGrid = css`
+  pointer-events: none;
+  cursor: not-allowed;
+`;
+
+export const ButtonContainer = styled.div<ButtonGridProps>`
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
@@ -79,6 +80,8 @@ export const ButtonContainer = styled.div`
   align-items: center;
 
   height: 250px;
+
+  ${({ disabled }) => disabled && disabledGrid}
 `;
 
 interface ButtonProps {

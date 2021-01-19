@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 import React, { useEffect, useRef, useState } from 'react';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import { LatLng } from 'leaflet';
@@ -9,12 +8,14 @@ import { useSurvivor } from '../../../contexts/survivorContext';
 import { useAuth } from '../../../contexts/authContext';
 import { formatPlural } from '../../../helpers/formatFlags';
 import Minimize from '../../controls';
+import Trade from '../../trade';
 
 import {
   Block, Button, Container, Gradient, Title
 } from '../../../generalStyles';
-import { ModulesName, useModules } from '../../../contexts/modulesContext';
+import { ModulesName } from '../../../contexts/modulesContext';
 import { SocketEvents, useSocket } from '../../../contexts/socketContext';
+import { useTrade } from '../../../contexts/tradeContext';
 
 export default () => {
   const [options, setOptions] = useState<Options>(null);
@@ -28,11 +29,14 @@ export default () => {
   const interval = useRef<any>();
 
   const { messageHandler } = useNotification();
-  const { toggleModule } = useModules();
   const { user } = useAuth();
   const { emitEvent, onEvent } = useSocket();
   const { survivor, updateSurvivorList, clearSurvivor } = useSurvivor();
   const { location } = survivor || {};
+  const { toggleTrading, tradeState } = useTrade();
+  const { trading } = tradeState;
+
+  const tradeHandler = () => toggleTrading(true);
 
   const flagSurvivorHandler = () => setOptions({
     method: 'POST',
@@ -76,7 +80,6 @@ export default () => {
         if (isFlagged) setFlagged(true);
       }
     }
-
     return () => { clearInterval(interval.current); };
   }, [survivor]);
 
@@ -87,52 +90,57 @@ export default () => {
   }, []);
 
   return survivor && (
-    <Container>
-      <Minimize moduleName={ModulesName.SURVIVOR} close={clearSurvivor} online={online} />
-      <Title>
-        {survivor.username}
-        &apos;s details
-      </Title>
-      <Block>
-        {position && (
-          <MapContainer center={position} zoom={13} scrollWheelZoom={false} style={{ height: '200px' }}>
-            <TileLayer
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            <Marker position={position} />
-          </MapContainer>
-        )}
-        {!position && <p>This survivor hasn&apos;t set his location</p>}
-      </Block>
-      <Block>
-        <Button
-          type="button"
-          gradient={Gradient.SECONDARY}
-          disabled={!online}
-          onClick={() => console.log('hi trade')}
-        >
-          {online ? 'Trade Items' : 'Cannot trade items'}
-        </Button>
-      </Block>
-      <Block>
-        {survivor.flags && (
-        <p>
-          This user
-          {' '}
-          {formatPlural(survivor.flags.length, 'flagged')}
-        </p>
-        )}
-        <Button
-          type="button"
-          gradient={Gradient.MAIN}
-          loading={loading ? 1 : 0}
-          disabled={loading || flagged}
-          onClick={flagSurvivorHandler}
-        >
-          {flagged ? 'Already flagged' : 'Flag survivor'}
-        </Button>
-      </Block>
-    </Container>
+    <>
+      {trading && <Trade />}
+      {!trading && (
+        <Container>
+          <Minimize moduleName={ModulesName.SURVIVOR} close={clearSurvivor} online={online} />
+          <Title>
+            {survivor.username}
+            &apos;s details
+          </Title>
+          <Block>
+            {position && (
+              <MapContainer center={position} zoom={13} scrollWheelZoom={false} style={{ height: '200px' }}>
+                <TileLayer
+                  attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <Marker position={position} />
+              </MapContainer>
+            )}
+            {!position && <p>This survivor hasn&apos;t set his location</p>}
+          </Block>
+          <Block>
+            <Button
+              type="button"
+              gradient={Gradient.SECONDARY}
+              disabled={!online}
+              onClick={tradeHandler}
+            >
+              {online ? 'Trade Items' : 'Cannot trade items'}
+            </Button>
+          </Block>
+          <Block>
+            {survivor.flags && (
+            <p>
+              This user
+              {' '}
+              {formatPlural(survivor.flags.length, 'flagged')}
+            </p>
+            )}
+            <Button
+              type="button"
+              gradient={Gradient.MAIN}
+              loading={loading ? 1 : 0}
+              disabled={loading || flagged}
+              onClick={flagSurvivorHandler}
+            >
+              {flagged ? 'Already flagged' : 'Flag survivor'}
+            </Button>
+          </Block>
+        </Container>
+      )}
+    </>
   );
 };

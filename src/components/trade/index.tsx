@@ -8,7 +8,7 @@ import { useTrade } from '../../contexts/tradeContext';
 import * as S from './styles';
 import { Item, ItemImage } from '../inventory/styles';
 import { useAuth } from '../../contexts/authContext';
-import { INVENTORY_SPACE, Modules } from '../../constant';
+import { INVENTORY_SPACE } from '../../constant';
 
 export default () => {
   const [spaces, setSpaces] = useState<number>(0);
@@ -16,8 +16,10 @@ export default () => {
 
   const { survivor } = useSurvivor();
   const { user } = useAuth();
+
   const { toggleModule, modules } = useModules();
   const { inventory } = modules;
+
   const {
     tradeState, onAccept, onDecline, onExit
   } = useTrade();
@@ -36,13 +38,17 @@ export default () => {
     setAllowTrade(spaces < 1);
   }, [spaces]);
 
-  return survivor && (
-    <S.TradeGrid disabled={!recipientAvailable ? 1 : 0}>
+  useEffect(() => {
+    if (trading && !inventory.display) toggleModule(ModulesName.INVENTORY);
+  }, [trading]);
+
+  return (
+    <S.TradeGrid>
       <S.TradeTitle>
         <S.Title>
           {recipientAvailable
-            ? `Trading with: ${survivor.username}`
-            : `Waiting ${survivor.username} to connect...`}
+            ? `Trading with: ${survivor?.username}`
+            : `Waiting ${survivor?.username} to connect...`}
         </S.Title>
         <ImExit
           size="3em"
@@ -66,7 +72,7 @@ export default () => {
       </S.YourTrade>
       <S.SurvivorTrade>
         <S.Text>
-          {survivor.username}
+          {survivor?.username}
           &apos;s offer
         </S.Text>
         <S.TradeItemsContainer>
@@ -82,13 +88,13 @@ export default () => {
         </S.TradeItemsContainer>
         {recipientAck && (
         <p>
-          {survivor.username}
+          {survivor?.username}
           {' '}
           has accepted the trade
         </p>
         )}
       </S.SurvivorTrade>
-      <S.ButtonContainer>
+      <S.ButtonContainer disabled={!recipientAvailable ? 1 : 0}>
         <S.InventoryData>
           {allowTrade ? (
             <p>
