@@ -2,8 +2,10 @@
 import React from 'react';
 import { MdArrowDropDown } from 'react-icons/md';
 import { IoCloseOutline } from 'react-icons/io5';
+import { BiMove } from 'react-icons/bi';
 import { ModulesName, useModules } from '../../contexts/modulesContext';
 import * as S from './styles';
+import { useDrag } from '../../contexts/dragContext';
 
 type ModuleName = ModulesName;
 
@@ -15,6 +17,7 @@ interface ControlsProps {
 
 export default ({ moduleName, close, online }: ControlsProps) => {
   const { toggleModule } = useModules();
+  const { toggleDrag } = useDrag();
 
   return (
     <S.Container>
@@ -36,6 +39,12 @@ export default ({ moduleName, close, online }: ControlsProps) => {
           </S.Minimize>
         )}
       </div>
+      <S.Move
+        onMouseEnter={toggleDrag}
+        onMouseLeave={toggleDrag}
+      >
+        <BiMove />
+      </S.Move>
       {online && (
         <S.Online
           title="Status"

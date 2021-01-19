@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
   position: absolute;
@@ -8,9 +8,11 @@ export const Container = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
+  text-align: center;
 `;
 
-export const Minimize = styled.button`
+const buttonBase = css`
   width: 50px;
 
   cursor: pointer;
@@ -19,6 +21,10 @@ export const Minimize = styled.button`
   color: lime;
   background-color: black;
   transition: .2s;
+`;
+
+export const Minimize = styled.button`
+  ${buttonBase}
 
   :hover { 
     color: black;
@@ -26,12 +32,13 @@ export const Minimize = styled.button`
   }
 `;
 
+export const Move = styled.div`
+  ${buttonBase}
+  width: 150px;
+  cursor: move;
+`;
+
 export const Online = styled.div`
+  ${buttonBase}
   width: 70px;
-  text-align: center;
-
-  border: 1px outset white;
-
-  color: lime;
-  background-color: black;
 `;
