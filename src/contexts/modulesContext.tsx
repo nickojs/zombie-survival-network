@@ -9,8 +9,7 @@ export enum ModulesName {
   SURVIVORLIST = 'survivorList',
   SURVIVOR = 'survivor',
   LOCATION = 'location',
-  INVENTORY = 'inventory',
-  TRADE = 'trade'
+  INVENTORY = 'inventory'
 }
 
 export interface Module {

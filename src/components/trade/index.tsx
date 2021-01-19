@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ImExit } from 'react-icons/im';
 
 import { useSurvivor } from '../../contexts/survivorContext';
@@ -8,7 +8,7 @@ import { useTrade } from '../../contexts/tradeContext';
 import * as S from './styles';
 import { Item, ItemImage } from '../inventory/styles';
 import { useAuth } from '../../contexts/authContext';
-import { INVENTORY_SPACE } from '../../constant';
+import { INVENTORY_SPACE, Modules } from '../../constant';
 
 export default () => {
   const [spaces, setSpaces] = useState<number>(0);
@@ -17,28 +17,13 @@ export default () => {
   const { survivor } = useSurvivor();
   const { user } = useAuth();
   const { toggleModule, modules } = useModules();
+  const { inventory } = modules;
   const {
-    tradeState, onAccept, onDecline, toggleTrading, onExit
+    tradeState, onAccept, onDecline, onExit
   } = useTrade();
   const {
     trading, items, receivedItems, recipientAck, senderAck, recipientAvailable
   } = tradeState;
-  const timer = useRef<any>();
-
-  useEffect(() => {
-    toggleTrading(true);
-
-    return () => { toggleTrading(false); };
-  }, []);
-
-  useEffect(() => {
-    if (trading) {
-      const { inventory } = modules;
-      if (!inventory?.display) toggleModule(ModulesName.INVENTORY);
-    }
-    if (!trading) timer.current = setTimeout(() => { toggleModule(ModulesName.TRADE); }, 500);
-    return () => { clearTimeout(timer.current); };
-  }, [trading]);
 
   useEffect(() => {
     if (user && user.items) {

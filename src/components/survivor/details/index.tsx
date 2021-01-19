@@ -110,7 +110,7 @@ export default () => {
           type="button"
           gradient={Gradient.SECONDARY}
           disabled={!online}
-          onClick={() => toggleModule(ModulesName.TRADE)}
+          onClick={() => console.log('hi trade')}
         >
           {online ? 'Trade Items' : 'Cannot trade items'}
         </Button>

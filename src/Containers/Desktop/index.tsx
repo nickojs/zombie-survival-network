@@ -11,13 +11,12 @@ import SurvivorList from '../../components/survivor/list';
 import Survivor from '../../components/survivor/details';
 import Location from '../../components/location';
 import Inventory from '../../components/inventory';
-import Trade from '../../components/trade';
 
 export default () => {
   const { token } = useAuth();
   const { modules, updatePosition } = useModules();
   const {
-    survivorList, survivor, profile, location, inventory, trade
+    survivorList, survivor, profile, location, inventory
   } = modules;
 
   const Modules = [
@@ -26,7 +25,6 @@ export default () => {
     { id: ModulesName.PROFILE, Component: Profile, module: profile },
     { id: ModulesName.LOCATION, Component: Location, module: location },
     { id: ModulesName.INVENTORY, Component: Inventory, module: inventory }
-    // { id: ModulesName.TRADE, Component: Trade, module: trade }
   ];
 
   return (
