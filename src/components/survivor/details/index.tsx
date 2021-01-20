@@ -38,10 +38,13 @@ export default () => {
 
   const tradeHandler = () => toggleTrading(true);
 
-  const flagSurvivorHandler = () => setOptions({
-    method: 'POST',
-    url: `user/flag/${survivor?.id}`
-  });
+  const flagSurvivorHandler = () => {
+    setFlagged(true);
+    setOptions({
+      method: 'POST',
+      url: `user/flag/${survivor?.id}`
+    });
+  };
 
   useEffect(() => {
     setPosition(null);
@@ -57,7 +60,6 @@ export default () => {
     if (data) {
       messageHandler(data.message, NotificationTypes.SUCCESS);
       updateSurvivorList();
-      setFlagged(true);
     }
   }, [data]);
 
