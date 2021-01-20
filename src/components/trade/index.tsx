@@ -9,6 +9,7 @@ import * as S from './styles';
 import { Item, ItemImage } from '../inventory/styles';
 import { useAuth } from '../../contexts/authContext';
 import { INVENTORY_SPACE } from '../../constant';
+import { useDrag } from '../../contexts/dragContext';
 
 export default () => {
   const [spaces, setSpaces] = useState<number>(0);
@@ -19,6 +20,8 @@ export default () => {
 
   const { toggleModule, modules } = useModules();
   const { inventory } = modules;
+
+  const { toggleDrag } = useDrag();
 
   const {
     tradeState, onAccept, onDecline, onExit
@@ -44,7 +47,10 @@ export default () => {
 
   return (
     <S.TradeGrid>
-      <S.TradeTitle>
+      <S.TradeTitle
+        onMouseEnter={toggleDrag}
+        onMouseLeave={toggleDrag}
+      >
         <S.Title>
           {recipientAvailable
             ? `Trading with: ${survivor?.username}`

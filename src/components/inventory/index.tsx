@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { BiHelpCircle, BiSearchAlt, BiArrowBack } from 'react-icons/bi';
+import {
+  BiHelpCircle, BiSearchAlt, BiArrowBack, BiMove
+} from 'react-icons/bi';
 
 import { useAuth } from '../../contexts/authContext';
 import { NotificationTypes, useNotification } from '../../contexts/notificationContext';
@@ -8,6 +10,7 @@ import InventoryItems from './inventoryItems';
 
 import * as S from './styles';
 import { useTrade } from '../../contexts/tradeContext';
+import { useDrag } from '../../contexts/dragContext';
 
 export interface OSRSItem {
   id: string;
@@ -36,6 +39,8 @@ export default () => {
 
   const { user } = useAuth();
   const { items } = user || { };
+
+  const { toggleDrag } = useDrag();
 
   useEffect(() => {
     if (items) {
@@ -87,21 +92,23 @@ export default () => {
     <S.InventoryContainer disabled={trading && !recipientAvailable ? 1 : 0}>
       {!trading && (
         <S.InventoryMenu>
-          <S.InventoryMenuItem
+          <S.InventoryMenuSearch
             title="Fetch and add items to the inventory"
             onClick={() => setSearchMode(!searchMode)}
           >
             {searchMode ? <BiArrowBack /> : <BiSearchAlt />}
-          </S.InventoryMenuItem>
-
-          <S.InventoryMenuItem />
-          <S.InventoryMenuItem />
-
-          <S.InventoryMenuItem
+          </S.InventoryMenuSearch>
+          <S.InventoryMenuAbout
             title="A small token of my appreciation to OSRS"
           >
             <BiHelpCircle />
-          </S.InventoryMenuItem>
+          </S.InventoryMenuAbout>
+          <S.InventoryMenuMove
+            onMouseEnter={toggleDrag}
+            onMouseLeave={toggleDrag}
+          >
+            <BiMove />
+          </S.InventoryMenuMove>
         </S.InventoryMenu>
       )}
 

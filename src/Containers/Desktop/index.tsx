@@ -2,6 +2,7 @@ import React from 'react';
 import { Rnd } from 'react-rnd';
 
 import { useAuth } from '../../contexts/authContext';
+import { useDrag } from '../../contexts/dragContext';
 import { useModules, ModulesName } from '../../contexts/modulesContext';
 import { SpecialDiv } from '../../generalStyles';
 
@@ -13,6 +14,7 @@ import Location from '../../components/location';
 import Inventory from '../../components/inventory';
 
 export default () => {
+  const { drag } = useDrag();
   const { token } = useAuth();
   const { modules, updatePosition } = useModules();
   const {
@@ -52,6 +54,7 @@ export default () => {
                   // @ts-ignore - ignoring 'default' because it is badly typed
                   default={screenPos || undefined}
                   enableResizing={false}
+                  disableDragging={!drag}
                   onDragStop={(e, data) => {
                     updatePosition(id, { x: data.x, y: data.y });
                   }}

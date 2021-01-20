@@ -32,10 +32,29 @@ export const InventoryMenu = styled.div`
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 50px;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 0px 0px;
+  grid-template-areas:
+    "search . . about . . . move";
   
-  display: flex;
-  flex-direction: row;
+  div { 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    font-size: 24px;
+    :not(:last-child){
+      cursor: pointer;
+    }
+  }
 `;
+
+export const InventoryMenuSearch = styled.div`grid-area: search;`;
+export const InventoryMenuAbout = styled.div`grid-area: about;`;
+export const InventoryMenuMove = styled.div`grid-area: move;`;
 
 export const InventoryMenuItem = styled.div`
   display: flex;

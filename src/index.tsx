@@ -9,6 +9,7 @@ import { SurvivorProvider } from './contexts/survivorContext';
 import { ModulesProvider } from './contexts/modulesContext';
 import { SocketProvider } from './contexts/socketContext';
 import { TradeProvider } from './contexts/tradeContext';
+import { DragProvider } from './contexts/dragContext';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -18,7 +19,9 @@ ReactDOM.render(
           <SocketProvider>
             <SurvivorProvider>
               <TradeProvider>
-                <App />
+                <DragProvider>
+                  <App />
+                </DragProvider>
               </TradeProvider>
             </SurvivorProvider>
           </SocketProvider>
