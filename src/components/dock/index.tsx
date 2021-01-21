@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { MdArrowDropUp, MdArrowDropDown } from 'react-icons/md';
-import { useModules, ModulesName } from '../../contexts/modulesContext';
+import { useModules } from '../../contexts/modulesContext';
 
 import * as S from './styles';
 
