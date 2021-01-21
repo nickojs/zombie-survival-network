@@ -4,10 +4,10 @@ let baseURL: string = '';
 
 switch (process.env.NODE_ENV) {
   case 'production':
-    baseURL = <string>process.env.REACT_APP_PROD_API;
+    baseURL = process.env.REACT_APP_PROD_API as string;
     break;
   case 'development':
-    baseURL = <string>process.env.REACT_APP_DEV_API;
+    baseURL = process.env.REACT_APP_DEV_API as string;
     break;
   default:
     break;

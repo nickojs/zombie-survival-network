@@ -3,7 +3,20 @@ import io from 'socket.io-client';
 import { useAuth } from './authContext';
 import { NotificationTypes, useNotification } from './notificationContext';
 
-const socket = io(process.env.REACT_APP_DEV_SOCKET as string);
+let SOCKET_URL = '';
+
+switch (process.env.NODE_ENV) {
+  case 'production':
+    SOCKET_URL = process.env.REACT_APP_PROD_SOCKET as string;
+    break;
+  case 'development':
+    SOCKET_URL = process.env.REACT_APP_DEV_SOCKET as string;
+    break;
+  default:
+    break;
+}
+
+const socket = io(SOCKET_URL);
 
 export enum SocketEvents {
   // user
